@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{500274E7-28CB-4096-A909-60D33C8D81FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.WoW.Web", "src\Pomelo.WoW.Web\Pomelo.WoW.Web.csproj", "{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B} = {500274E7-28CB-4096-A909-60D33C8D81FF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AE1D412-8057-4EAD-85C9-D99B7850E9FA}
+	EndGlobalSection
+EndGlobal
