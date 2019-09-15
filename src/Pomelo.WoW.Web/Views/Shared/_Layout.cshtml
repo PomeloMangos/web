@@ -39,20 +39,11 @@
         </div>
     </div>
 
-    <div id="qmenu_menu" class="p_pop blk" style="display: none;">
-        <div class="ptm pbw hm">
-            请 <a href="javascript:;" class="xi2" onclick="lsSubmit()"><strong>登录</strong></a> 后使用快捷导航<br />没有帐号？<a href="member.php?mod=register_wowtbc" class="xi2 xw1">立即注册账号</a>
-        </div>
-    </div><div id="wrapper">
+    <div id="wrapper">
         <div id="header">
 
             <div class="search-bar">
-                <form id="scbar_form" method="post" autocomplete="off" onsubmit="searchFocus($('scbar_txt'))" action="search.php?searchsubmit=yes" target="_blank">
-                    <input type="hidden" name="mod" id="scbar_mod" value="search" />
-                    <input type="hidden" name="formhash" value="500d442b" />
-                    <input type="hidden" name="srchtype" value="title" />
-                    <input type="hidden" name="srhfid" value="0" />
-                    <input type="hidden" name="srhlocality" value="portal::index" />
+                <form id="scbar_form" method="post" autocomplete="off" action="search.php?searchsubmit=yes" target="_blank">
                     <div>
                         <input type="text" name="srchtxt" class="search-field input" onfocus="if (value =='请输入搜索内容'){value =''}" onblur="if (value ==''){value='请输入搜索内容'}" value="请输入搜索内容" autocomplete="off" x-webkit-speech=x-webkit-speech speech=speech />
                         <button type="submit" name="searchsubmit" sc="1" class="search-button" value="true">搜索</button>
@@ -71,7 +62,7 @@
                     <li class="menu-services"> <a href="#" class="@(controller  == "about" ? "menu-active" : "")"> <span>关于</span> </a> </li>
                 </ul>
                 <div class="user-plate">
-                    <a class="card-character plate-logged-out" href="member.php?mod=logging&amp;action=login&amp;referer=" onclick="showWindow('login', this.href);return false;"> <span class="card-portrait"></span> <span class="wow-login-key"></span> <span class="login-msg"><strong>登录</strong>您的柚子账号，管理您的角色、公会与账号。</span> </a>
+                    <a class="card-character plate-logged-out" asp-action="Index" asp-controller="Account"> <span class="card-portrait"></span> <span class="wow-login-key"></span> <span class="login-msg"><strong>登录</strong>您的柚子账号，管理您的角色、公会与账号。</span> </a>
                 </div>
             </div>
         </div>
