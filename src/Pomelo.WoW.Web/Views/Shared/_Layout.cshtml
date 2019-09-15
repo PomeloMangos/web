@@ -1,11 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    var y = controller;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title - 柚子魔兽</title>
-    <link href="styles/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="styles/site.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/site.css" rel="stylesheet" type="text/css" />
 </head>
 <body id="nv_portal" class="pg_index">
     <div id="append_parent"></div><div id="ajaxwaitid"></div>
@@ -16,7 +20,7 @@
             <div class="grid-container nav-header-content">
                 <ul class="nav-list nav-left" id="nav-client-main-menu">
                     <li>
-                        <a class="nav-item nav-home" href="./"><img class="nav-logo" src="images/logo.png" /></a>
+                        <a class="nav-item nav-home" href="./"><img class="nav-logo" src="~/images/logo.png" /></a>
                     </li>
                     <li>
                         <div class="dropdown games">
@@ -59,12 +63,12 @@
             <h1 id="logo"><a href="./" title="魔兽怀旧|魔兽世界怀旧服"><img src="template/mssj/images/logo.png" alt="魔兽怀旧|魔兽世界怀旧服" border="0" /></a></h1>
             <div class="header-plate">
                 <ul class="menu" id="menu">
-                    <li class="menu-home"><a href="/" class="menu-active"><span>首页</span></a></li>
-                    <li class="menu-game"> <a href="/account"> <span>账号</span> </a> </li>
-                    <li class="menu-community"> <a href="/guild"> <span>公会</span> </a> </li>
-                    <li class="menu-media"> <a href="/download"> <span>下载</span> </a> </li>
-                    <li class="menu-forums"> <a href="/forum"> <span>论坛</span> </a> </li>
-                    <li class="menu-services"> <a href="#"> <span>关于</span> </a> </li>
+                    <li class="menu-home"><a href="/" class="@(controller  == "home" ? "menu-active" : "")"><span>首页</span></a></li>
+                    <li class="menu-game"> <a href="/account" class="@(controller  == "account" ? "menu-active" : "")"> <span>账号</span> </a> </li>
+                    <li class="menu-community"> <a href="/guild" class="@(controller  == "guild" ? "menu-active" : "")"> <span>公会</span> </a> </li>
+                    <li class="menu-media"> <a href="/download" class="@(controller  == "download" ? "menu-active" : "")"> <span>下载</span> </a> </li>
+                    <li class="menu-forums"> <a href="/forum" class="@(controller  == "forum" ? "menu-active" : "")"> <span>论坛</span> </a> </li>
+                    <li class="menu-services"> <a href="#" class="@(controller  == "about" ? "menu-active" : "")"> <span>关于</span> </a> </li>
                 </ul>
                 <div class="user-plate">
                     <a class="card-character plate-logged-out" href="member.php?mod=logging&amp;action=login&amp;referer=" onclick="showWindow('login', this.href);return false;"> <span class="card-portrait"></span> <span class="wow-login-key"></span> <span class="login-msg"><strong>登录</strong>您的柚子账号，管理您的角色、公会与账号。</span> </a>
@@ -74,9 +78,9 @@
     </div>
     @RenderBody()
     <div class="footer">
-        <a href="https://www.blizzard.com/en-us/games/" target="_blank"><img src="images/blizzard.png" /></a>
-        <a href="https://cmangos.net/" target="_blank"><img src="images/cmangos.png" /></a>
-        <a href="https://github.com/pomelomangos" target="_blank"><img src="images/pomelo.png" /></a>
+        <a href="https://www.blizzard.com/en-us/games/" target="_blank"><img src="~/images/blizzard.png" /></a>
+        <a href="https://cmangos.net/" target="_blank"><img src="~/images/cmangos.png" /></a>
+        <a href="https://github.com/pomelomangos" target="_blank"><img src="~/images/pomelo.png" /></a>
         <span>© Copyright 2019 WoWTBC</span>
     </div>
 </body>

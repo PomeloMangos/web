@@ -92,7 +92,8 @@ button::-moz-focus-inner {
 .container {
     margin: 0 auto;
     width: 994px;
-    background: #1a0f08 url(../images/top.jpg) no-repeat left top
+    background: #1a0f08 url(../images/top.jpg) no-repeat left top;
+    border-radius: 8px;
 }
 
 .wp {
@@ -1894,7 +1895,8 @@ a.nav-client .nav-bar-item.active {
     border-left: 3px solid #cdcdcd;
     background: #27150a;
     border-bottom: 1px solid #2a180c;
-    box-shadow: 0 0 10px rgba(0,0,0,.2)
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    display: block;
 }
 
     .card-menu-item.cyan {
@@ -1918,7 +1920,9 @@ a.nav-client .nav-bar-item.active {
     }
 
     .card-menu-item:hover {
-        background: #351d0f
+        background: #351d0f;
+        color: #fff;
+        text-decoration: none;
     }
 
 .clear {
@@ -1978,3 +1982,25 @@ a.nav-client .nav-bar-item.active {
     margin-bottom: 10px;
     border-bottom: .7px solid #613c23
 }
+
+.realm-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: .7px solid #613c23;
+}
+
+    .realm-table td, .realm-table th {
+        text-align: left;
+        border-top: .7px solid #613c23;
+        border-bottom: .7px solid #613c23;
+        padding: 8px 12px;
+    }
+
+.realm-table tbody tr:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+    .realm-table thead {
+        background: #321d0e;
+    }

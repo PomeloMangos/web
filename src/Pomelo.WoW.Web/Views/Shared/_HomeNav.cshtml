@@ -1,0 +1,9 @@
+﻿@{ 
+    var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
+}
+<div class="left">
+    <a asp-action="Index" class="card-menu-item cyan @(action == "index" ? "active" : "")"><i class="fa fa-bell"></i> 新闻公告</a>
+    <a asp-action="Realmlist" class="card-menu-item green @(action == "realmlist" ? "active" : "")"><i class="fa fa-heartbeat"></i> 服务器状态</a>
+    <a class="card-menu-item red @(action == "intro" ? "active" : "")"><i class="fa fa-star"></i> 特色介绍</a>
+    <a class="card-menu-item purple @(action == "chat" ? "active" : "")"><i class="fa fa-users"></i> 加入群聊</a>
+</div>
