@@ -3,72 +3,81 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Pomelo.WoW.Web</title>
-
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <title>@ViewBag.Title - 柚子魔兽</title>
+    <link href="styles/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="styles/site.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Pomelo.WoW.Web</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+<body id="nv_portal" class="pg_index">
+    <div id="append_parent"></div><div id="ajaxwaitid"></div>
+
+    <div id="nav-client-header" class="nav-client compact">
+        <div id="nav-client-bar">
+
+            <div class="grid-container nav-header-content">
+                <ul class="nav-list nav-left" id="nav-client-main-menu">
+                    <li>
+                        <a class="nav-item nav-home" href="./"><img class="nav-logo" src="images/logo.png" /></a>
+                    </li>
+                    <li>
+                        <div class="dropdown games">
+                            <a class="dropdown-toggle nav-link needsclick active" data-toggle="dropdown" id="youxi">柚子魔兽</b></a>
+                        </div>
+                    </li>
+                    <li>
+                    </li>
                 </ul>
             </div>
         </div>
-    </nav>
-
-    <partial name="_CookieConsentPartial" />
-
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2019 - Pomelo.WoW.Web</p>
-        </footer>
+        <div class="nav-notification-responsive-container">
+            <div class="nav-notification-dropdown dropdown-menu">
+                <div class="arrow top"></div>
+            </div>
+        </div>
     </div>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    <div id="qmenu_menu" class="p_pop blk" style="display: none;">
+        <div class="ptm pbw hm">
+            请 <a href="javascript:;" class="xi2" onclick="lsSubmit()"><strong>登录</strong></a> 后使用快捷导航<br />没有帐号？<a href="member.php?mod=register_wowtbc" class="xi2 xw1">立即注册账号</a>
+        </div>
+    </div><div id="wrapper">
+        <div id="header">
 
-    @RenderSection("Scripts", required: false)
+            <div class="search-bar">
+                <form id="scbar_form" method="post" autocomplete="off" onsubmit="searchFocus($('scbar_txt'))" action="search.php?searchsubmit=yes" target="_blank">
+                    <input type="hidden" name="mod" id="scbar_mod" value="search" />
+                    <input type="hidden" name="formhash" value="500d442b" />
+                    <input type="hidden" name="srchtype" value="title" />
+                    <input type="hidden" name="srhfid" value="0" />
+                    <input type="hidden" name="srhlocality" value="portal::index" />
+                    <div>
+                        <input type="text" name="srchtxt" class="search-field input" onfocus="if (value =='请输入搜索内容'){value =''}" onblur="if (value ==''){value='请输入搜索内容'}" value="请输入搜索内容" autocomplete="off" x-webkit-speech=x-webkit-speech speech=speech />
+                        <button type="submit" name="searchsubmit" sc="1" class="search-button" value="true">搜索</button>
+                    </div>
+                </form>
+            </div>
+
+            <h1 id="logo"><a href="./" title="魔兽怀旧|魔兽世界怀旧服"><img src="template/mssj/images/logo.png" alt="魔兽怀旧|魔兽世界怀旧服" border="0" /></a></h1>
+            <div class="header-plate">
+                <ul class="menu" id="menu">
+                    <li class="menu-home"><a href="/" class="menu-active"><span>首页</span></a></li>
+                    <li class="menu-game"> <a href="/account"> <span>账号</span> </a> </li>
+                    <li class="menu-community"> <a href="/guild"> <span>公会</span> </a> </li>
+                    <li class="menu-media"> <a href="/download"> <span>下载</span> </a> </li>
+                    <li class="menu-forums"> <a href="/forum"> <span>论坛</span> </a> </li>
+                    <li class="menu-services"> <a href="#"> <span>关于</span> </a> </li>
+                </ul>
+                <div class="user-plate">
+                    <a class="card-character plate-logged-out" href="member.php?mod=logging&amp;action=login&amp;referer=" onclick="showWindow('login', this.href);return false;"> <span class="card-portrait"></span> <span class="wow-login-key"></span> <span class="login-msg"><strong>登录</strong>您的柚子账号，管理您的角色、公会与账号。</span> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+    <div class="footer">
+        <a href="https://www.blizzard.com/en-us/games/" target="_blank"><img src="images/blizzard.png" /></a>
+        <a href="https://cmangos.net/" target="_blank"><img src="images/cmangos.png" /></a>
+        <a href="https://github.com/pomelomangos" target="_blank"><img src="images/pomelo.png" /></a>
+        <span>© Copyright 2019 WoWTBC</span>
+    </div>
 </body>
 </html>
