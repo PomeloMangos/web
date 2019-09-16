@@ -1850,6 +1850,19 @@ a.nav-client .nav-bar-item.active {
     outline: 0;
 }
 
+    .large-button.special {
+        padding: 13px 15px;
+        text-align: center;
+        vertical-align: top;
+        line-height: 16px;
+        font-size: 16px;
+    }
+
+    .large-button small {
+        font-size: 10px;
+        color: #c47122;
+    }
+
     .large-button:hover {
         text-decoration: none;
         color: #fff !important;
@@ -2045,3 +2058,37 @@ a.nav-client .nav-bar-item.active {
     height: 480px;
     padding: 60px
 }
+
+.download {
+    background: url(../images/download-bg.png) no-repeat;
+    background-position-x: left;
+    background-position-y: top;
+    min-height: 480px;
+    padding: 60px
+}
+
+    .download img {
+        max-width: 40%;
+        box-shadow: 0 0 15px #aee4016b;
+        margin: 25px 0;
+    }
+
+
+
+.download-table {
+    width: 50%;
+    margin: 30px 0;
+    border-collapse: collapse;
+    border: .7px solid #613c23;
+}
+
+    .download-table td {
+        text-align: left;
+        border-top: .7px solid #613c23;
+        border-bottom: .7px solid #613c23;
+        padding: 8px 12px;
+    }
+
+    .download-table tbody tr:hover {
+        background-color: rgba(255,255,255,0.1);
+    }

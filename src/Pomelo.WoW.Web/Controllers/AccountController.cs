@@ -70,7 +70,7 @@ namespace Pomelo.WoW.Web.Controllers
                     "SELECT LAST_INSERT_ID();", account);
 
                 await conn.ExecuteAsync(
-                    "INSERT INTO `account` (`id`, `username`, `gmlevel`, `v`, `s`, `email`, `joindate`, `expansion`)" +
+                    "INSERT INTO `account` (`id`, `username`, `gmlevel`, `v`, `s`, `email`, `joindate`, `expansion`, `last_login`)" +
                     "VALUES (@entry, @username, @gmlevel, @v, @s, @email, @joindate, @expansion)",
                     new
                     {
