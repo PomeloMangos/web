@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{500274E7-28C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.WoW.Web", "src\Pomelo.WoW.Web\Pomelo.WoW.Web.csproj", "{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomelo.WoW.SRP6", "src\Pomelo.WoW.SRP6\Pomelo.WoW.SRP6.csproj", "{C48312AA-5883-4F6D-82F8-55E7271EF3C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C48312AA-5883-4F6D-82F8-55E7271EF3C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C48312AA-5883-4F6D-82F8-55E7271EF3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C48312AA-5883-4F6D-82F8-55E7271EF3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C48312AA-5883-4F6D-82F8-55E7271EF3C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{93BFAF3C-E2E7-4710-B875-A8E0B0EF0F3B} = {500274E7-28CB-4096-A909-60D33C8D81FF}
+		{C48312AA-5883-4F6D-82F8-55E7271EF3C8} = {500274E7-28CB-4096-A909-60D33C8D81FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AE1D412-8057-4EAD-85C9-D99B7850E9FA}

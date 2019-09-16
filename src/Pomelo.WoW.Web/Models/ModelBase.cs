@@ -6,25 +6,19 @@ namespace Pomelo.WoW.Web.Models
 {
     public class ModelBase
     {
-        public async static Task<MySqlConnection> GetAuthDbAsync()
+        public static MySqlConnection GetAuthDb()
         {
-            var conn = new MySqlConnection(Startup.Config.Databases.Auth);
-            await conn.OpenAsync();
-            return conn;
+            return new MySqlConnection(Startup.Config.Databases.Auth);
         }
 
-        public async static Task<MySqlConnection> GetWorldDbAsync()
+        public static MySqlConnection GetWorldDb()
         {
-            var conn = new MySqlConnection(Startup.Config.Databases.World);
-            await conn.OpenAsync();
-            return conn;
+            return new MySqlConnection(Startup.Config.Databases.World);
         }
 
-        public async static Task<MySqlConnection> GetPlayerDbAsync(long id)
+        public static MySqlConnection GetPlayerDb(long id)
         {
-            var conn = new MySqlConnection(Startup.Config.Databases.Players.Single(x => x.Id == id).Value);
-            await conn.OpenAsync();
-            return conn;
+            return new MySqlConnection(Startup.Config.Databases.Players.Single(x => x.Id == id).Value);
         }
     }
 }

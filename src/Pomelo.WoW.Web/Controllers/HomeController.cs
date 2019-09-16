@@ -13,7 +13,7 @@ namespace Pomelo.WoW.Web.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            using (var conn = await Announce.GetAuthDbAsync())
+            using (var conn = Announce.GetAuthDb())
             {
                 var query = await conn.QueryAsync<Announce>(
                     "SELECT * FROM `pomelo_announce` " +
@@ -25,7 +25,7 @@ namespace Pomelo.WoW.Web.Controllers
 
         public async Task<IActionResult> Realmlist()
         {
-            using (var conn = await Realm.GetAuthDbAsync())
+            using (var conn = Realm.GetAuthDb())
             {
                 var query = await conn.QueryAsync<Realm>(
                     "SELECT * FROM `realmlist`;");

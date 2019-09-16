@@ -23,6 +23,10 @@ namespace Pomelo.WoW.Web.Models
 
         public byte[] Salt { get; set; }
 
-        public AccountLevel Level { get; set; }
+        public AccountLevel Role { get; set; }
+
+        public string Email { get; set; }
+
+        public string Contact { get; set; }
     }
 }

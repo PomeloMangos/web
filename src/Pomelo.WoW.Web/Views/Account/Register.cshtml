@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "注册";
+}
+
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <form class="register" method="post">
+                <div class="banner-title">新用户注册</div>
+                <div class="register-form-item">
+                    <label>
+                        用户名
+                        <input type="text" name="username" autocomplete="off" class="register-textbox" />
+                    </label>
+                </div>
+                <div class="register-form-item">
+                    <label>
+                        密码
+                        <input type="password" name="password" autocomplete="off" class="register-textbox" />
+                    </label>
+                </div>
+                <div class="register-form-item">
+                    <label>
+                        密码重复
+                        <input type="password" name="confirm" autocomplete="off" class="register-textbox" />
+                    </label>
+                </div>
+                <div class="register-form-item">
+                    <label>
+                        电子邮箱（将用于密码找回）
+                        <input type="text" name="email" autocomplete="off" class="register-textbox" />
+                    </label>
+                </div>
+                <div class="register-form-item">
+                    <label>
+                        其他联系方式（微信、QQ、手机号码等）
+                        <input type="text" name="contact" autocomplete="off" class="register-textbox" />
+                    </label>
+                </div>
+                <div class="banner-buttons">
+                    <input type="submit" class="large-button" value="注册" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

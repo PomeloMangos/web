@@ -1,0 +1,26 @@
+﻿@model Prompt
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="message">
+                <div class="banner-title">@ViewBag.Title</div>
+                <div class="banner-content">@Model.Details</div>
+                <div class="banner-buttons">
+                    @if (!string.IsNullOrEmpty(Model.RedirectUrl))
+                    {
+                        <a href="@Model.RedirectUrl" class="large-button">@Model.RedirectText</a>
+                    }
+                    @if (!Model.HideBack)
+                    {
+                        <a href="javascript:window.history.go(-1);" class="large-button">返回上一页</a>
+                    }
+                    <a asp-controller="Home" asp-action="Index" class="large-button">返回首页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

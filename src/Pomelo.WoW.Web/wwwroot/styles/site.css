@@ -1845,7 +1845,9 @@ a.nav-client .nav-bar-item.active {
     font-size: 20px;
     padding: 15px 25px;
     box-shadow: 0 0 15px rgba(0,0,0,.2);
-    display: inline-block
+    display: inline-block;
+    color: #ffb100;
+    outline: 0;
 }
 
     .large-button:hover {
@@ -2004,3 +2006,42 @@ a.nav-client .nav-bar-item.active {
     .realm-table thead {
         background: #321d0e;
     }
+
+.register {
+    background: url(../images/register-bg.png);
+    background-position-y: bottom;
+    height: 480px;
+    padding: 60px
+}
+
+.register-textbox {
+    border: .5px solid #7d2605;
+    font-size: 18px;
+    line-height: 32px;
+    height: 32px;
+    width: 40%;
+    display: block;
+    background: #311b0e;
+    outline: 0;
+    padding: 0 10px;
+    color: #efc9a0;
+}
+
+    .register-textbox:hover, .register-textbox:focus {
+        border-color: #ffb100;
+    }
+
+    .register-textbox:focus {
+        color: #ffb100;
+    }
+
+.register-form-item {
+    margin-top: 20px;
+}
+
+.message {
+    background: url(../images/404-bg.png);
+    background-position-y: bottom;
+    height: 480px;
+    padding: 60px
+}
