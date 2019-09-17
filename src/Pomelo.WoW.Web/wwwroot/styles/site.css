@@ -2226,3 +2226,39 @@ a.nav-client .nav-bar-item.active {
 #btn-select-character {
     margin-top: 35px;
 }
+
+.stuck-item {
+    height: 130px;
+    width: 622px;
+    margin: 15px 0;
+    border: 1px solid rgba(0,0,0,0.8);
+}
+
+.stuck-item-text {
+    padding-top: 85px;
+    text-align: right;
+    padding-right: 15px;
+    text-shadow: 1px 1px 3px #000;
+    color: #ffb100;
+    font-size: 24px;
+    line-height: 40px;
+    text-decoration: none !important;
+}
+
+.stuck-item:hover {
+    box-shadow: 0 0 10px #ffb100;
+    border-color: #ffb100;
+}
+
+.stuck-item.active {
+    box-shadow: 0 0 10px #96df51;
+    border-color: #96df51;
+}
+
+.stuck-item-outer:hover {
+    text-decoration: none;
+}
+
+.account-form {
+    margin: 30px 0;
+}

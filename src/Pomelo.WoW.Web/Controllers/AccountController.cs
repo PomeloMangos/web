@@ -186,6 +186,104 @@ namespace Pomelo.WoW.Web.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult Stuck()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Stuck(int place)
+        {
+            if (Character.Faction == Faction.Alliance)
+            {
+                switch(place)
+                {
+                    case 1: // 暴风城
+                        Character.Map = 0;
+                        Character.X = -9065;
+                        Character.Y = 434;
+                        Character.Z = 94;
+                        break;
+                    case 2: // 铁炉堡
+                        Character.Map = 0;
+                        Character.X = -5032;
+                        Character.Y = -819;
+                        Character.Z = 495;
+                        break;
+                    case 3: // 达纳苏斯
+                        Character.Map = 1;
+                        Character.X = -9961;
+                        Character.Y = 2055;
+                        Character.Z = 1329;
+                        break;
+                    case 4: // 埃索达
+                        Character.Map = 530;
+                        Character.X = -4043.632813;
+                        Character.Y = -11933.284180;
+                        Character.Z = -0.057945;
+                        break;
+                }
+            }
+            else
+            {
+                switch (place)
+                {
+                    case 1: // 奥格瑞玛
+                        Character.Map = 1;
+                        Character.X = 1317;
+                        Character.Y = -4383;
+                        Character.Z = 27;
+                        break;
+                    case 2: // 雷霆崖
+                        Character.Map = 1;
+                        Character.X = -1292.98;
+                        Character.Y = 143.898;
+                        Character.Z = 129.83;
+                        break;
+                    case 3: // 幽暗城
+                        Character.Map = 0;
+                        Character.X = 1909;
+                        Character.Y = 235;
+                        Character.Z = 53;
+                        break;
+                    case 4: // 银月城
+                        Character.Map = 530;
+                        Character.X = 9336.9;
+                        Character.Y = -7278.4;
+                        Character.Z = 13.6;
+                        break;
+                }
+            }
+
+            using (var conn = Character.GetCharacterDb(Character.RealmId))
+            {
+                await conn.ExecuteAsync(
+                    "UPDATE `characters` " +
+                    "SET `position_x` = @X, " +
+                    "`position_y` = @Y, " +
+                    "`position_z` = @Z, " +
+                    "`map` = @Map " +
+                    "WHERE `guid` = @Id", 
+                    new { Character.X, Character.Y, Character.Z, Character.Map, Character.Id });
+            }
+
+            return Prompt(x =>
+            {
+                x.Title = "角色卡死";
+                x.Details = "系统已经将您的角色转移至安全区域，请您登录游戏查看。";
+            });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Gift()
+        {
+            return View();
+        }
+
         private async Task SetDefaultCharacterAsync(ulong accountId, MySqlConnection conn)
         {
             var characters = await CharacterCollector.FindCharactersAsync(accountId);

@@ -1,0 +1,88 @@
+﻿@{ 
+    ViewBag.Title = "角色卡死 - 用户中心";
+    Character character = ViewBag.Character;
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div style="padding: 5px 0 30px 30px">
+                    <div class="account-title">角色卡死</div>
+                    @if (character != null)
+                    {
+                        <div>当您的角色卡死时，使用本功能可将您移动至安全区域。请确保角色已离线，并选择下列任意一个地点，系统将自动将您传送至指定的地点。</div>
+                        <div class="stuck-place">
+                            @if (character.Faction == Faction.Alliance)
+                            {
+                                <a class="stuck-item-outer" href="javascript:select(1);">
+                                    <div class="stuck-item active" id="place-1" style="background:url(/images/stuck-alliance-01.jpg)">
+                                        <div class="stuck-item-text">暴风城</div>
+                                    </div>
+                                </a>
+                                <a class="stuck-item-outer" href="javascript:select(2);">
+                                    <div class="stuck-item" id="place-2" style="background:url(/images/stuck-alliance-02.jpg)">
+                                        <div class="stuck-item-text">铁炉堡</div>
+                                    </div>
+                                </a>
+                                <a class="stuck-item-outer" href="javascript:select(3);">
+                                    <div class="stuck-item" id="place-3" style="background:url(/images/stuck-alliance-03.jpg)">
+                                        <div class="stuck-item-text">达纳苏斯</div>
+                                    </div>
+                                </a>
+                                <a class="stuck-item-outer" href="javascript:select(4);">
+                                    <div class="stuck-item" id="place-4" style="background:url(/images/stuck-alliance-04.jpg)">
+                                        <div class="stuck-item-text">埃索达</div>
+                                    </div>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="stuck-item-outer" href="javascript:select(1);">
+                                    <div class="stuck-item active" id="place-1" style="background:url(/images/stuck-horde-01.jpg)">
+                                        <div class="stuck-item-text">奥格瑞玛</div>
+                                    </div>
+                                </a>
+                                <a class="stuck-item-outer" href="javascript:select(2);">
+                                    <div class="stuck-item" id="place-2" style="background:url(/images/stuck-horde-02.jpg)">
+                                        <div class="stuck-item-text">雷霆崖</div>
+                                    </div>
+                                </a>
+                                <a class="stuck-item-outer" href="javascript:select(3);">
+                                    <div class="stuck-item" id="place-3" style="background:url(/images/stuck-horde-03.jpg)">
+                                        <div class="stuck-item-text">幽暗城</div>
+                                    </div>
+                                </a>
+                                <a class="stuck-item-outer" href="javascript:select(4);">
+                                    <div class="stuck-item" id="place-4" style="background:url(/images/stuck-horde-04.jpg)">
+                                        <div class="stuck-item-text">银月城</div>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                        <a href="javascript:;" id="btn-stuck" class="large-button">传送角色</a>
+                    }
+                    else
+                    {
+                        <div>您还没有创建任何角色，请您进入游戏创建一个角色再来操作。</div>
+                    }
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<form id="form-stuck" asp-action="Stuck" asp-controller="Account">
+    <input type="hidden" id="hid-place" name="place" value="1" />
+</form>
+<script>
+    function select(id) {
+        $('.stuck-item').removeClass('active');
+        $('#place-' + id).addClass('active');
+        $('#hid-place').val(id);
+    }
+
+    $('#btn-stuck').click(function () {
+        $('#form-stuck').submit();
+    });
+</script>

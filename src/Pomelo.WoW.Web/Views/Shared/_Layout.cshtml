@@ -81,7 +81,7 @@
                     }
                     else
                     {
-                        <a class="card-character plate-logged-out @Html.GetFactionClassName(Html.GetFaction(character.Race))" asp-action="Index" asp-controller="Account">
+                        <a class="card-character plate-logged-out @Html.GetFactionClassName(character.Faction)" asp-action="Index" asp-controller="Account">
                             <span class="card-portrait"></span>
                             <div class="login-msg">
                                 <div class="login-character-name"><strong>@character.Name</strong></div>

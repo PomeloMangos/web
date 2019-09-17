@@ -98,5 +98,29 @@ namespace Pomelo.WoW.Web.Models
 
         [NotMapped]
         public uint RealmId { get; set; }
+
+        [NotMapped]
+        public Faction Faction
+        {
+            get
+            {
+                switch (Race)
+                {
+                    case Race.BloodElf:
+                    case Race.Orc:
+                    case Race.Tauren:
+                    case Race.Undead:
+                    case Race.Troll:
+                        return Faction.Horde;
+                    case Race.Draenei:
+                    case Race.Gnome:
+                    case Race.Human:
+                    case Race.NightElf:
+                        return Faction.Alliance;
+                    default:
+                        return Faction.Unknown;
+                }
+            }
+        }
     }
 }

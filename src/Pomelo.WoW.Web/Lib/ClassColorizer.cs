@@ -72,26 +72,6 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                 return "";
         }
 
-        public static Faction GetFaction(this IHtmlHelper html, Race race)
-        {
-            switch (race)
-            {
-                case Race.BloodElf:
-                case Race.Orc:
-                case Race.Tauren:
-                case Race.Undead:
-                case Race.Troll:
-                    return Faction.Horde;
-                case Race.Draenei:
-                case Race.Gnome:
-                case Race.Human:
-                case Race.NightElf:
-                    return Faction.Alliance;
-                default:
-                    return Faction.Unknown;
-            }
-        }
-
         public static string GetRaceName(this IHtmlHelper html, Race race)
         {
             switch (race)
