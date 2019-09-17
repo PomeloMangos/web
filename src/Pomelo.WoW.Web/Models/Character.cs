@@ -19,6 +19,13 @@ namespace Pomelo.WoW.Web.Models
         DemonHunter = 12,
     }
 
+    public enum Faction
+    {
+        Alliance,
+        Horde,
+        Unknown
+    }
+
     public enum Race
     {
         Human = 1,
@@ -51,7 +58,7 @@ namespace Pomelo.WoW.Web.Models
     public class Character : ModelBase
     {
         [Column("guid")]
-        public uint Id { get; set; }
+        public ulong Id { get; set; }
 
         [Column("account")]
         public uint AccountId { get; set; }
@@ -88,5 +95,8 @@ namespace Pomelo.WoW.Web.Models
 
         [Column("deleteDate")]
         public DateTime? DeleteDate { get; set; }
+
+        [NotMapped]
+        public uint RealmId { get; set; }
     }
 }

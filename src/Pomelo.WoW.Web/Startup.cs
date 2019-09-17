@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Pomelo.WoW.Web.Models;
+using Pomelo.WoW.Web.Lib;
 
 namespace Pomelo.WoW.Web
 {
@@ -20,6 +20,7 @@ namespace Pomelo.WoW.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            TypeMapper.Initialize("Pomelo.WoW.Web.Models");
         }
 
         public static IConfiguration Configuration { get; private set; }

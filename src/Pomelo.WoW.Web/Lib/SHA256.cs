@@ -25,5 +25,12 @@ namespace Pomelo.WoW.Web.Lib
             var mixed = Encoding.UTF8.GetBytes(password).Concat(salt).ToArray();
             return hasher.ComputeHash(mixed);
         }
+
+        public static bool Validate(string username, string password, byte[] salt, byte[] refhash)
+        {
+            var mixed = Encoding.UTF8.GetBytes(password).Concat(salt).ToArray();
+            var generated = hasher.ComputeHash(mixed);
+            return generated.SequenceEqual(refhash);
+        }
     }
 }

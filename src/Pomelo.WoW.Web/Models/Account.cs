@@ -28,5 +28,9 @@ namespace Pomelo.WoW.Web.Models
         public string Email { get; set; }
 
         public string Contact { get; set; }
+
+        public uint? DefaultRealm { get; set; }
+
+        public uint? DefaultCharacter { get; set; }
     }
 }

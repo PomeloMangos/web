@@ -19,6 +19,9 @@
     <Content Update="appsettings.Production.json">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
+    <Content Update="Views\Account\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Account\Login.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

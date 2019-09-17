@@ -27,6 +27,18 @@ namespace Pomelo.WoW.Web.Authentication
         {
         }
 
+        protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
+        {
+            return base.HandleForbiddenAsync(properties);
+        }
+
+        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        {
+            Context.Response.Redirect("/account/login");
+            return Task.FromResult(0);
+            //return base.HandleChallengeAsync(properties);
+        }
+
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             var user = Context.Session.GetString("user");

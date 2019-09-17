@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using MySql.Data.MySqlClient;
 using Pomelo.WoW.Web.Models;
 using Pomelo.WoW.Web.Lib;
 using Dapper;
@@ -108,6 +109,88 @@ namespace Pomelo.WoW.Web.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            using (var conn = Account.GetAuthDb())
+            {
+                var query = await conn.QueryAsync<Account>(
+                    "SELECT * FROM `pomelo_account`" +
+                    "WHERE `username` = @username", new { username });
+                var user = query.SingleOrDefault();
+
+                if (user == null)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "登录失败";
+                        x.Details = $"用户{username}不存在";
+                        x.StatusCode = 404;
+                    });
+                }
+
+                var validate = SHA256.Validate(username, password, user.Salt, user.Hash);
+                if (!validate)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "登录失败";
+                        x.Details = $"用户名或密码不正确";
+                        x.StatusCode = 400;
+                    });
+                }
+
+                // Set default character
+                if (user.DefaultRealm.HasValue)
+                {
+                    var character = await CharacterCollector.GetCharacterAsync(user.DefaultRealm.Value, user.DefaultCharacter.Value);
+                    if (character.AccountId != user.Id)
+                    {
+                        await SetDefaultCharacterAsync(user.Id, conn);
+                    }
+                }
+                else
+                {
+                    await SetDefaultCharacterAsync(user.Id, conn);
+                }
+
+                HttpContext.Session.SetString("user", user.Username);
+                return RedirectToAction("Index");
+            }
+        }
+
+        private async Task SetDefaultCharacterAsync(ulong accountId, MySqlConnection conn)
+        {
+            var characters = await CharacterCollector.FindCharactersAsync(accountId);
+            if (characters.Count() > 0)
+            {
+                await SetDefaultCharacterAsync(accountId, characters.First().RealmId, characters.First().Id, conn);
+            }
+            else
+            {
+                await conn.ExecuteAsync(
+                "UPDATE `pomelo_account` " +
+                "SET `DefaultRealm` = NULL, " +
+                "`DefaultCharacter` = NULL " +
+                "WHERE `Id` = @Id", new { Id = accountId });
+            }
+        }
+
+        private async Task SetDefaultCharacterAsync(ulong accountId, uint realmId, ulong characterId, MySqlConnection conn)
+        {
+            await conn.ExecuteAsync(
+                "UPDATE `pomelo_account` " +
+                "SET `DefaultRealm` = @DefaultRealm, " +
+                "`DefaultCharacter` = @DefaultCharacter " +
+                "WHERE `Id` = @Id",
+                new
+                {
+                    DefaultRealm = realmId,
+                    DefaultCharacter = characterId,
+                    Id = accountId
+                });
         }
     }
 }

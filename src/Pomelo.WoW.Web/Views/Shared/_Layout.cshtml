@@ -1,6 +1,7 @@
 ﻿@{ 
     var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
     var y = controller;
+    Character character = ViewBag.Character;
 }
 <!DOCTYPE html>
 <html>
@@ -62,7 +63,31 @@
                     <li class="menu-services"> <a href="#" class="@(controller  == "about" ? "menu-active" : "")"> <span>关于</span> </a> </li>
                 </ul>
                 <div class="user-plate">
-                    <a class="card-character plate-logged-out" asp-action="Index" asp-controller="Account"> <span class="card-portrait"></span> <span class="wow-login-key"></span> <span class="login-msg"><strong>登录</strong>您的柚子账号，管理您的角色、公会与账号。</span> </a>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a class="card-character plate-logged-out" asp-action="Index" asp-controller="Account">
+                            <span class="card-portrait"></span>
+                            <span class="wow-login-key"></span>
+                            <span class="login-msg"><strong>登录</strong>您的柚子账号，管理您的角色、公会与账号。</span>
+                        </a>
+                    }
+                    else if (character == null)
+                    {
+                        <a class="card-character plate-logged-out" asp-action="Index" asp-controller="Account">
+                            <span class="card-portrait"></span>
+                            <span class="login-msg"><strong>@User.Identity.Name</strong>，创建角色后可参与论坛交流等操作。</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="card-character plate-logged-out @Html.GetFactionClassName(Html.GetFaction(character.Race))" asp-action="Index" asp-controller="Account">
+                            <span class="card-portrait"></span>
+                            <div class="login-msg">
+                                <div class="login-character-name"><strong>@character.Name</strong></div>
+                                <div class="login-character-info">@(character.Level)级 @Html.GetRaceName(character.Race) <span style="color:@Html.ColorizeClass(character.Class)">@Html.GetClassName(character.Class)</span></div>
+                            </div>
+                        </a>
+                    }
                 </div>
             </div>
         </div>

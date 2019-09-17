@@ -2092,3 +2092,23 @@ a.nav-client .nav-bar-item.active {
     .download-table tbody tr:hover {
         background-color: rgba(255,255,255,0.1);
     }
+
+.login-character-name {
+    font-size: 18px;
+}
+
+.card-character.alliance {
+    background-image: url(../images/charcard-alliance.jpg) !important;
+}
+
+.card-character.horde {
+    background-image: url(../images/charcard-horde.jpg) !important;
+}
+
+.alliance .card-portrait {
+    border-color: #66a0ff !important;
+}
+
+.horde .card-portrait {
+    border-color: #cb4141 !important;
+}
