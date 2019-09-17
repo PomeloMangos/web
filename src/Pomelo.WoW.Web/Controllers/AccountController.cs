@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Pomelo.WoW.Web.Models;
 using Pomelo.WoW.Web.Lib;
 using Dapper;
@@ -11,6 +13,13 @@ namespace Pomelo.WoW.Web.Controllers
 {
     public class AccountController : ControllerBase
     {
+        [HttpGet]
+        [Authorize]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult Register()
         {

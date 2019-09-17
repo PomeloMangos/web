@@ -12,7 +12,7 @@ namespace Pomelo.WoW.Web.Models
 
         static ModelBase()
         {
-            GetDatabasesAsync().Wait();
+            GetDatabases();
         }
 
         public static MySqlConnection GetAuthDb()
@@ -35,11 +35,11 @@ namespace Pomelo.WoW.Web.Models
             return _db.Where(x => x.RealmId.HasValue);
         }
 
-        private static async Task GetDatabasesAsync()
+        private static void GetDatabases()
         {
             using (var conn = GetAuthDb())
             {
-                var query = await conn.QueryAsync<Database>(
+                var query = conn.Query<Database>(
                     "SELECT * FROM `pomelo_database`;");
                 _db = query.ToList();
             }
