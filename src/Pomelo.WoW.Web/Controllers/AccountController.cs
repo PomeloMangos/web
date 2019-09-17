@@ -47,6 +47,16 @@ namespace Pomelo.WoW.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(string username, string password, string confirm, string email, string contact)
         {
+            if (password != confirm)
+            {
+                return Prompt(x =>
+                {
+                    x.Title = "注册失败";
+                    x.Details = "两次密码输入不一致";
+                    x.StatusCode = 400;
+                });
+            }
+
             using (var conn = Account.GetAuthDb())
             {
                 var query = await conn.QueryAsync<int>(
@@ -282,6 +292,56 @@ namespace Pomelo.WoW.Web.Controllers
         public IActionResult Gift()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Password()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Password(string password, string newpwd, string confirm)
+        {
+            if (newpwd != confirm)
+            {
+                return Prompt(x =>
+                {
+                    x.Title = "修改密码失败";
+                    x.Details = "两次密码输入不一致";
+                    x.StatusCode = 400;
+                });
+            }
+
+            var validate = SHA256.Validate(User.Identity.Name, password, Account.Salt, Account.Hash);
+            if (!validate)
+            {
+                return Prompt(x =>
+                {
+                    x.Title = "修改密码失败";
+                    x.Details = "当前密码输入不正确";
+                    x.StatusCode = 400;
+                });
+            }
+
+            var hash1 = SHA256.Generate(newpwd);
+            var hash2 = Lib.SRP6.Generate(User.Identity.Name, newpwd);
+
+            using (var conn = Account.GetAuthDb())
+            {
+                await conn.ExecuteAsync(
+                    "UPDATE `pomelo_account` SET `Hash` = @hash, `Salt` = @salt WHERE `Id` = @Id;" +
+                    "UPDATE `account` SET `v` = @v, `s` = @s WHERE `id` = @Id;",
+                    new { hash1.hash, hash1.salt, hash2.v, hash2.s, Account.Id });
+            }
+
+            return Prompt(x =>
+            {
+                x.Title = "修改密码成功";
+                x.Details = "您已成功修改了密码，请使用新密码登录门户网站及游戏客户端。";
+            });
         }
 
         private async Task SetDefaultCharacterAsync(ulong accountId, MySqlConnection conn)
