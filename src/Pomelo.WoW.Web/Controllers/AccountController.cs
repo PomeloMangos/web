@@ -16,9 +16,26 @@ namespace Pomelo.WoW.Web.Controllers
     {
         [HttpGet]
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var characters = await CharacterCollector.FindCharactersAsync(Account.Id);
+            return View(characters);
+        }
+
+        public async Task<IActionResult> Index(uint realm, ulong character)
+        {
+            using (var conn = Account.GetAuthDb())
+            {
+                await SetDefaultCharacterAsync(Account.Id, realm, character, conn);
+            }
+            return Prompt(x =>
+            {
+                x.Title = "切换成功";
+                x.Details = "您已经成功切换至新角色";
+                x.HideBack = true;
+                x.RedirectText = "刷新";
+                x.RedirectUrl = Url.Action("Index");
+            });
         }
 
         [HttpGet]

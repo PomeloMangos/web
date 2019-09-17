@@ -1,13 +1,61 @@
-﻿@{ 
-    ViewBag.Title = "用户中心";
+﻿@model IEnumerable<Character>
+@{ 
+    ViewBag.Title = "切换角色 - 用户中心";
+    Character character = ViewBag.Character;
 }
 <div class="container">
     <div id="wp" class="wp">
         <div class="main">
-            @await Html.PartialAsync("_HomeNav")
-            <div class="right">
+            <div class="left2">
+                <div style="padding: 5px 0 30px 30px">
+                    <div class="account-title">切换角色</div>
+                    @if (Model.Count() > 0)
+                    {
+                        <div class="character-list">
+                            @foreach (var x in Model)
+                            {
+                                <div class="character-item-outer">
+                                    <div class="character-item @(x.Id == character.Id && x.RealmId == character.RealmId ? "active" : "")" data-realm-id="@x.RealmId" data-character-id="@x.Id">
+                                        <img src="~/images/class-icon-@((int)x.Class).png" />
+                                        <div class="character-item-info">
+                                            <div class="character-item-name">@x.Name</div>
+                                            <div class="character-item-level">@(x.Level)级 @Html.GetRaceName(x.Race) <span style="color:@Html.ColorizeClass(x.Class)">@Html.GetClassName(x.Class)</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="clear"></div>
+                        </div>
+                        <a href="javascript:;" id="btn-select-character" class="large-button">切换角色</a>
+                    }
+                    else
+                    {
+                        <div>您尚未创建任何角色，请您先进入游戏创建角色后再来操作。</div>
+                    }
+                </div>
             </div>
+            @await Html.PartialAsync("_AccountNav")
             <div class="clear"></div>
         </div>
     </div>
 </div>
+<form id="form-select-character" asp-action="Index" asp-controller="Account">
+    <input type="hidden" id="hid-realm-id" name="realm" value="@character.RealmId" />
+    <input type="hidden" id="hid-character-id" name="character" value="@character.Id" />
+</form>
+<script>
+    $('.character-item').click(function (e) {
+        $('.character-item').removeClass('active');
+        var item = $(e.target);
+        if (!item.hasClass('.character-item')) {
+            item = item.parents('.character-item');
+        }
+        item.addClass('active');
+        $('#hid-realm-id').val(item.attr('data-realm-id'));
+        $('#hid-character-id').val(item.attr('data-character-id'));
+    });
+
+    $('#btn-select-character').click(function () {
+        $('#form-select-character').submit();
+    });
+</script>

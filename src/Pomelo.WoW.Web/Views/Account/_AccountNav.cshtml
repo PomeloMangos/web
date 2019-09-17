@@ -1,0 +1,9 @@
+﻿@{ 
+    var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
+}
+    <div class="right2">
+        <h3 class="sidebar-menu-title">账号管理</h3>
+        <a asp-action="Index" class="sidebar-menu-item @(action == "index" ? "active" : "")"><i class="fa fa-user-circle-o"></i> 切换角色</a>
+        <a asp-action="Index" class="sidebar-menu-item @(action == "password" ? "active" : "")"><i class="fa fa-lock"></i> 修改密码</a>
+        <a asp-action="Index" class="sidebar-menu-item @(action == "password" ? "active" : "")"><i class="fa fa-bell"></i> 新闻公告</a>
+    </div>

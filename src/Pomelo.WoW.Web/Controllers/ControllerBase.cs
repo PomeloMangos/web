@@ -43,16 +43,28 @@ namespace Pomelo.WoW.Web.Controllers
                             "SELECT * FROM `characters`" +
                             "WHERE `guid` = @CharacterId",
                             new { CharacterId = Account.DefaultCharacter.Value }).SingleOrDefault();
+                        _character.RealmId = Account.DefaultRealm.Value;
                     }
                 }
                 return _character;
             }
         }
 
-        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        protected virtual void Prepare()
         {
             ViewBag.Account = Account;
             ViewBag.Character = Character;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            Prepare();
+            base.OnActionExecuting(context);
+        }
+
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            Prepare();
             return base.OnActionExecutionAsync(context, next);
         }
 
