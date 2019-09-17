@@ -17,15 +17,12 @@ namespace Pomelo.WoW.Web
 {
     public class Startup
     {
-        public static Config Config { get; private set; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("appsettings.json"));
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {

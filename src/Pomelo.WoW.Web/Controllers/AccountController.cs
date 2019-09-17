@@ -94,5 +94,11 @@ namespace Pomelo.WoW.Web.Controllers
                 });
             }
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
     }
 }

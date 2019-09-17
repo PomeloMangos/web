@@ -1,24 +1,48 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using Dapper;
 
 namespace Pomelo.WoW.Web.Models
 {
     public class ModelBase
     {
+        private static IEnumerable<Database> _db;
+
+        static ModelBase()
+        {
+            GetDatabasesAsync().Wait();
+        }
+
         public static MySqlConnection GetAuthDb()
         {
-            return new MySqlConnection(Startup.Config.Databases.Auth);
+            return new MySqlConnection(Startup.Configuration["Database"]);
         }
 
-        public static MySqlConnection GetWorldDb()
+        public static MySqlConnection GetWorldDb(uint id)
         {
-            return new MySqlConnection(Startup.Config.Databases.World);
+            return _db.SingleOrDefault(x => x.Id == id && x.RealmId == null).GetConn();
         }
 
-        public static MySqlConnection GetPlayerDb(long id)
+        public static MySqlConnection GetCharacterDb(uint id)
         {
-            return new MySqlConnection(Startup.Config.Databases.Players.Single(x => x.Id == id).Value);
+            return _db.SingleOrDefault(x => x.RealmId == id).GetConn();
+        }
+
+        public static IEnumerable<Database> GetCharacterDbs()
+        {
+            return _db.Where(x => x.RealmId.HasValue);
+        }
+
+        private static async Task GetDatabasesAsync()
+        {
+            using (var conn = GetAuthDb())
+            {
+                var query = await conn.QueryAsync<Database>(
+                    "SELECT * FROM `pomelo_database`;");
+                _db = query.ToList();
+            }
         }
     }
 }
