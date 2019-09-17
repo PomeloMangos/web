@@ -2118,7 +2118,7 @@ a.nav-client .nav-bar-item.active {
     padding: 0 15px;
     line-height: 40px;
     font-size: 14px;
-    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
     display: block;
     border-radius: 8px;
     margin-bottom: 5px;
@@ -2156,12 +2156,18 @@ a.nav-client .nav-bar-item.active {
 
 .sidebar-menu-title {
     margin-bottom: 5px;
+    margin-top: 25px;
 }
+
+    .sidebar-menu-title.first {
+        margin-top: 0;
+    }
 
 .character-item-outer {
     float: left;
     width: 218px;
 }
+
 .character-item {
     margin: 15px;
     border: 1px solid rgba(0,0,0,0.8);

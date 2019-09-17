@@ -9,7 +9,7 @@ using Dapper;
 
 namespace Pomelo.WoW.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         public async Task<IActionResult> Index()
         {

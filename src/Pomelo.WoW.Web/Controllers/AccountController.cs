@@ -178,6 +178,14 @@ namespace Pomelo.WoW.Web.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("user");
+            return RedirectToAction("Login");
+        }
+
         private async Task SetDefaultCharacterAsync(ulong accountId, MySqlConnection conn)
         {
             var characters = await CharacterCollector.FindCharactersAsync(accountId);

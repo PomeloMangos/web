@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Pomelo.WoW.Web.Controllers
 {
     [Route("[controller]")]
-    public class LauncherController : Controller
+    public class LauncherController : ControllerBase
     {
         [HttpGet("register.url")]
         public IActionResult Register()
