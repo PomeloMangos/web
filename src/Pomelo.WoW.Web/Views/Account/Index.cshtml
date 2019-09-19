@@ -40,8 +40,8 @@
     </div>
 </div>
 <form id="form-select-character" asp-action="Index" asp-controller="Account">
-    <input type="hidden" id="hid-realm-id" name="realm" value="@character?.RealmId" />
-    <input type="hidden" id="hid-character-id" name="character" value="@character?.Id" />
+    <input type="hidden" id="hid-realm-id" name="realmId" value="@character?.RealmId" />
+    <input type="hidden" id="hid-character-id" name="characterId" value="@character?.Id" />
 </form>
 <script>
     $('.character-item').click(function (e) {

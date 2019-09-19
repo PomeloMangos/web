@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Forum>
+@{
+    ViewBag.Title = "论坛";
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="forum-header">
+            <div class="banner-title">论坛</div>
+        </div>
+        <div class="forum-main">
+            @foreach (var x in Model)
+            {
+                <div class="forum-block">
+                    <h3>@x.Name</h3>
+                    <div class="forum-outer">
+                        @foreach (var y in x.SubForums)
+                        {
+                            <a asp-action="Thread" asp-route-id="@y.Id">
+                                <div class="forum-item">
+                                    <img src="@y.IconUrl" />
+                                    <div class="forum-inner">
+                                        <div class="forum-title">@y.Name</div>
+                                        <div class="forum-description">@y.Description</div>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

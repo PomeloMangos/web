@@ -2266,3 +2266,72 @@ a.nav-client .nav-bar-item.active {
 .account-main {
     padding: 5px 0 30px 30px;
 }
+
+.forum-header {
+    background: url(../images/forum-bg.jpg);
+    background-position-y: top;
+    background-repeat: no-repeat;
+    height: 50px;
+    padding: 60px
+}
+
+.forum-main {
+    background: url(../images/bg-index.jpg);
+    background-position-y: top;
+    background-repeat: no-repeat;
+    padding: 60px 60px 30px 60px;
+}
+
+.forum-item {
+    border: 1px solid #a04e06;
+    float: left;
+    height: 50px;
+    width: 239px;
+    padding: 15px;
+    margin: 15px;
+    background: rgba(255,255,255,0.05);
+}
+
+    .forum-item:hover {
+        border-color: #ffae00;
+        background: rgba(255,255,255,0.12);
+    }
+
+.forum-outer {
+    margin: 0 -15px;
+}
+
+.forum-item img {
+    height: 50px;
+    width: 50px;
+    float: left;
+}
+
+.forum-inner {
+    margin-left: 10px;
+    width: 179px;
+    float: left;
+}
+
+.forum-title {
+    float: left;
+    width: 189px;
+    font-size: 16px;
+}
+
+.forum-description {
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.forum-block {
+    margin-bottom: 30px;
+}
+
+a .forum-item {
+    color: #efc9a0;
+}
+
+a:hover .forum-title {
+    color: #ffae00;
+}

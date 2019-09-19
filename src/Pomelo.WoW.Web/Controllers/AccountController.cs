@@ -22,11 +22,20 @@ namespace Pomelo.WoW.Web.Controllers
             return View(characters);
         }
 
-        public async Task<IActionResult> Index(uint realm, ulong character)
+        public async Task<IActionResult> Index(uint realmId, uint characterId)
         {
             using (var conn = Account.GetAuthDb())
             {
-                await SetDefaultCharacterAsync(Account.Id, realm, character, conn);
+                var character = await CharacterCollector.GetCharacterAsync(realmId, characterId);
+                await SetDefaultCharacterAsync(
+                    Account.Id, 
+                    realmId, 
+                    characterId,
+                    character.Name,
+                    character.Race,
+                    character.Class,
+                    character.Level,
+                    conn);
             }
             return Prompt(x =>
             {
@@ -349,7 +358,15 @@ namespace Pomelo.WoW.Web.Controllers
             var characters = await CharacterCollector.FindCharactersAsync(accountId);
             if (characters.Count() > 0)
             {
-                await SetDefaultCharacterAsync(accountId, characters.First().RealmId, characters.First().Id, conn);
+                await SetDefaultCharacterAsync(
+                    accountId, 
+                    characters.First().RealmId, 
+                    characters.First().Id,
+                    characters.First().Name,
+                    characters.First().Race,
+                    characters.First().Class,
+                    characters.First().Level,
+                    conn);
             }
             else
             {
@@ -361,18 +378,26 @@ namespace Pomelo.WoW.Web.Controllers
             }
         }
 
-        private async Task SetDefaultCharacterAsync(ulong accountId, uint realmId, ulong characterId, MySqlConnection conn)
+        private async Task SetDefaultCharacterAsync(ulong accountId, uint realmId, ulong characterId, string nickname, Race race, Class @class, int level, MySqlConnection conn)
         {
             await conn.ExecuteAsync(
                 "UPDATE `pomelo_account` " +
                 "SET `DefaultRealm` = @DefaultRealm, " +
                 "`DefaultCharacter` = @DefaultCharacter " +
+                "`CharacterNickname` = @CharacterNickname" +
+                "`CharacterLevel` = @CharacterLevel" +
+                "`CharacterRace` = @CharacterRace" +
+                "`CharacterClass` = @CharacterClass" +
                 "WHERE `Id` = @Id",
                 new
                 {
                     DefaultRealm = realmId,
                     DefaultCharacter = characterId,
-                    Id = accountId
+                    Id = accountId,
+                    CharacterNickname = nickname,
+                    CharacterRace = race,
+                    CharacterClass = @class,
+                    CharacterLevel = level
                 });
         }
     }
