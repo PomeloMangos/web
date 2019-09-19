@@ -2335,3 +2335,73 @@ a .forum-item {
 a:hover .forum-title {
     color: #ffae00;
 }
+
+.thread-list-header {
+    padding: 30px;
+}
+
+.thread-list {
+    margin: 0 -30px;
+}
+
+.thread-table {
+    width: 100%;
+    border-collapse: collapse;
+    line-height: 48px;
+    font-size: 14px;
+}
+
+    .thread-table th {
+        font-weight: normal;
+        text-align: left;
+    }
+
+.thread-list-header-title {
+    font-size: 18px;
+    color: #fff;
+}
+
+.thread-table thead {
+    opacity: 0.65;
+}
+
+.thread-table tr td:first-child, .thread-table tr th:first-child {
+    padding-left: 30px;
+}
+
+.thread-table tr td:last-child, .thread-table tr th:last-child {
+    padding-right: 30px;
+}
+
+.thread-table tr {
+    border-bottom: 1px solid #613c23;
+}
+
+.table-right {
+    text-align: right!important;
+}
+
+.thread-table tbody tr:hover {
+    background:rgba(255,255,255,0.1);
+}
+
+.thread-table i {
+    color: #ffb100;
+    width: 20px;
+    font-size: 20px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.thread-table tbody tr.thread-pinned {
+    background: #96df511f;
+}
+
+.thread-table a {
+    color: #efc9a0;
+}
+
+.thread-table a:hover {
+    color: rgba(239, 201, 160, 0.6);
+    text-decoration: none;
+}

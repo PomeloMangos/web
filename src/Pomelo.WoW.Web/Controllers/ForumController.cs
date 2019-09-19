@@ -10,6 +10,7 @@ namespace Pomelo.WoW.Web.Controllers
 {
     public class ForumController : ControllerBase
     {
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             using (var conn = Forum.GetAuthDb())
@@ -29,6 +30,57 @@ namespace Pomelo.WoW.Web.Controllers
                 }
 
                 return View(result);
+            }
+        }
+
+        [HttpGet("forum/{id}")]
+        public async Task<IActionResult> Thread(string id, int page = 0)
+        {
+            using (var conn = Forum.GetAuthDb())
+            {
+                var forum = (await conn.QueryAsync<Forum>(
+                    "SELECT * FROM `pomelo_forum_list` WHERE `Id` = @id;", new { id })).SingleOrDefault();
+
+                if (forum == null)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "没有找到板块";
+                        x.Details = "您指定的论坛板块不存在，请更正后再试！";
+                        x.StatusCode = 404;
+                    });
+                }
+
+                ViewBag.Forum = forum;
+
+                var queryStr = string.Format(
+                    "SELECT `pomelo_forum_thread`.`Id`, `pomelo_forum_thread`.`ForumId`, " +
+                    "`pomelo_forum_thread`.`Title`, `pomelo_forum_thread`.`VisitCount`, " +
+                    "`pomelo_forum_thread`.`IsPinned`, `pomelo_forum_thread`.`IsLocked`, " +
+                    "`pomelo_forum_thread`.`AccountId`, `pomelo_account`.`CharacterRace`, " +
+                    "`pomelo_account`.`CharacterNickname`, `pomelo_account`.`Username` AS `AccountName`, " +
+                    "`pomelo_account`.`CharacterClass`, `pomelo_account`.`CharacterLevel`, " +
+                    "`pomelo_forum_thread`.`Time`, `pomelo_forum_thread`.`ReplyTime`, " +
+                    "`pomelo_account`.`Role` " +
+                    "FROM `pomelo_forum_thread` " +
+                    "INNER JOIN `pomelo_account` " +
+                    "ON `pomelo_forum_thread`.`AccountId` = `pomelo_account`.`Id` " +
+                    "WHERE `ForumId` = @Id " +
+                    "AND `ParentId` IS NULL " +
+                    "ORDER BY `IsPinned` ASC, `ReplyTime` DESC " +
+                    "LIMIT 20 OFFSET {0}", page * 20);
+
+                var threads = (await conn.QueryAsync<Thread>(queryStr, new { forum.Id })).ToList();
+
+                var count = (await conn.QueryAsync<int>(
+                    "SELECT COUNT(1) FROM `pomelo_forum_thread` " +
+                    "WHERE `ForumId` = @Id AND `ParentId` IS NULL;")).First();
+
+                var pageCount = (count + 20 - 1) / 20;
+                ViewBag.Count = count;
+                ViewBag.PageCount = pageCount;
+
+                return View(threads);
             }
         }
     }

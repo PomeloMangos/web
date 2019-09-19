@@ -6,7 +6,7 @@ namespace Pomelo.WoW.Web.Models
     {
         public uint Id { get; set; }
 
-        public uint ForumId { get; set; }
+        public string ForumId { get; set; }
 
         public string Title { get; set; }
 
@@ -22,6 +22,20 @@ namespace Pomelo.WoW.Web.Models
 
         public ulong AccountId { get; set; }
 
+        public string CharacterNickname { get; set; }
+
+        public string AccountName { get; set; }
+
+        public AccountLevel Role { get; set; }
+
+        public Race CharacterRace { get; set; }
+
+        public Class CharacterClass{ get; set; }
+
+        public int CharacterLevel { get; set; }
+
         public DateTime Time { get; set; }
+
+        public DateTime ReplyTime { get; set; }
     }
 }

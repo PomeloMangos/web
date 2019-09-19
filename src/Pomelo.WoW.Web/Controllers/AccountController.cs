@@ -186,6 +186,12 @@ namespace Pomelo.WoW.Web.Controllers
                     {
                         await SetDefaultCharacterAsync(user.Id, conn);
                     }
+                    else
+                    {
+                        await SetDefaultCharacterAsync(user.Id, character.RealmId, 
+                            character.Id, character.Name, character.Race, character.Class, 
+                            character.Level, conn);
+                    }
                 }
                 else
                 {
@@ -383,11 +389,11 @@ namespace Pomelo.WoW.Web.Controllers
             await conn.ExecuteAsync(
                 "UPDATE `pomelo_account` " +
                 "SET `DefaultRealm` = @DefaultRealm, " +
-                "`DefaultCharacter` = @DefaultCharacter " +
-                "`CharacterNickname` = @CharacterNickname" +
-                "`CharacterLevel` = @CharacterLevel" +
-                "`CharacterRace` = @CharacterRace" +
-                "`CharacterClass` = @CharacterClass" +
+                "`DefaultCharacter` = @DefaultCharacter, " +
+                "`CharacterNickname` = @CharacterNickname, " +
+                "`CharacterLevel` = @CharacterLevel, " +
+                "`CharacterRace` = @CharacterRace, " +
+                "`CharacterClass` = @CharacterClass " +
                 "WHERE `Id` = @Id",
                 new
                 {

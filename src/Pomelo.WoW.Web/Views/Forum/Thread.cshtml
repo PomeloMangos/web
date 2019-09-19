@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Thread>
+@{
+    ViewBag.Title = ViewBag.Forum.Name;
+    int count = ViewBag.Count;
+    int pageCount = ViewBag.PageCount;
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="thread-list-header">
+            <div class="thread-list-header-title">论坛板块</div>
+            <div class="thread-list">
+                <table class="thread-table">
+                    <colgroup>
+                        <col style="width: 55%" />
+                        <col style="width: 15%" />
+                        <col style="width: 7%" />
+                        <col style="width: 7%" />
+                        <col style="width: 16%" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>主题</th>
+                            <th>作者</th>
+                            <th>回复</th>
+                            <th>查看</th>
+                            <th class="table-right">最后回复时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var x in Model)
+                        {
+                            <tr class="@(x.IsPinned ? "thread-pinned" : "")">
+                                <td><i class="fa @(x.IsLocked ? "fa-lock" : "fa-file-o")"></i> <a asp-action="Post" asp-route-id="@x.Id">@x.Title</a></td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(x.CharacterNickname))
+                                    {
+                                        <span style="@(x.Role >= AccountLevel.Master ? "color:#96df51" : "")">@x.CharacterNickname</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="@(x.Role >= AccountLevel.Master ? "color:#96df51" : "")">@x.AccountName</span>
+                                    }
+                                </td>
+                                <td>0</td>
+                                <td>@x.VisitCount</td>
+                                <td class="table-right">@x.ReplyTime.ToString("yyyy-MM-dd HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>

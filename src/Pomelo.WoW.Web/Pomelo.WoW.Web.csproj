@@ -40,6 +40,9 @@
     <Content Update="Views\Account\_AccountNav.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Forum\Thread.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Home\Realmlist.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
