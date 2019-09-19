@@ -7,7 +7,7 @@
 <div class="container">
     <div id="wp" class="wp">
         <div class="thread-list-header">
-            <div class="thread-list-header-title">论坛板块</div>
+            <div class="thread-list-header-title">@ViewBag.Title</div>
             <div class="thread-list">
                 <table class="thread-table">
                     <colgroup>
@@ -51,8 +51,18 @@
                 </table>
             </div>
         </div>
-        <div>
-
-        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="thread-post">
+                <form method="post" asp-action="Post">
+                    <h3>主题</h3>
+                    <input type="text" class="post-textbox" name="title" />
+                    <h3 style="margin-top: 15px;">内容</h3>
+                    <textarea class="markdown-editor" name="content"></textarea>
+                    <input type="hidden" name="id" value="@ViewBag.Forum.Id" />
+                    <input type="submit" value="发表" style="margin-top: 15px;" class="large-button" />
+                </form>
+            </div>
+        }
     </div>
 </div>

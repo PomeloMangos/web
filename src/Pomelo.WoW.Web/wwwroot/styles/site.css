@@ -2405,3 +2405,31 @@ a:hover .forum-title {
     color: rgba(239, 201, 160, 0.6);
     text-decoration: none;
 }
+
+.thread-post {
+    padding: 30px;
+    background: url(../images/bg-index.jpg);
+    background-position-y: top;
+    background-repeat: no-repeat;
+}
+
+.post-textbox {
+    border: .5px solid #ffae00a6;
+    font-size: 18px;
+    line-height: 32px;
+    height: 32px;
+    width: 40%;
+    display: block;
+    background: rgba(49, 27, 14, 0.4);
+    outline: 0;
+    padding: 0 10px;
+    color: #efc9a0;
+}
+
+    .post-textbox:hover, .post-textbox:focus {
+        border-color: #ffb100;
+    }
+
+    .post-textbox:focus {
+        color: #ffb100;
+    }

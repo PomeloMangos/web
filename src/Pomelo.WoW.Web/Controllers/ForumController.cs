@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Pomelo.WoW.Web.Models;
 using Dapper;
 
@@ -81,6 +82,23 @@ namespace Pomelo.WoW.Web.Controllers
                 ViewBag.PageCount = pageCount;
 
                 return View(threads);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Post(string title, string content, string id)
+        {
+            using (var conn = Models.Thread.GetAuthDb())
+            {
+                var postId = (await conn.QueryAsync<uint>(
+                    "INSERT INTO `pomelo_forum_thread` " +
+                    "(`Title`, `Content`, `ForumId`, `AccountId`, `IsPinned`, `IsLocked`, `VisitCount`) " +
+                    "VALUES (@title, @content, @id, @accountId, FALSE, FALSE, 0); " +
+                    "SELECT LAST_INSERT_ID();", 
+                    new { title, content, id, accountId = Account.Id })).First();
+
+                return RedirectToAction("Post", new { id = postId });
             }
         }
     }
