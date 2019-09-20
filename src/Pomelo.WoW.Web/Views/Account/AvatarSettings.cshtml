@@ -1,0 +1,24 @@
+﻿@{ 
+    ViewBag.Title = "设置头像 - 用户中心";
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title">设置头像</div>
+                    <form method="post" enctype="multipart/form-data">
+                        <div>上传jpg, png, bmp, gif等格式的正方形头像，文件小于1MB</div>
+                        <div class="account-form">
+                            <input type="file" name="file" class="register-textbox" />
+                        </div>
+                        <img src="/account/@ViewBag.Account.Id/avatar" style="width: 150px; height: 150px; margin-bottom: 30px;" />
+                        <p><input type="submit" value="上传" class="large-button" /></p>
+                    </form>
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

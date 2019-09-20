@@ -29,6 +29,9 @@
     <Content Update="appsettings.Production.json">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
+    <Content Update="Views\Account\AvatarSettings.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Account\Password.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

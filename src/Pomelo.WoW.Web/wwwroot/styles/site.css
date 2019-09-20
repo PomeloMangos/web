@@ -1894,7 +1894,7 @@ a.nav-client .nav-bar-item.active {
     background: #211308;
     box-shadow: 0 0 10px rgba(0,0,0,.3);
     background-image: url(../images/bg-index.jpg);
-    background-position-x: left;
+    background-position-x: center;
     background-position-y: -4px;
     background-repeat: no-repeat;
     margin: 0;

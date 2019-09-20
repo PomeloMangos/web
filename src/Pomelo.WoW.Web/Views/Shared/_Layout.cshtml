@@ -78,14 +78,14 @@
                     else if (character == null)
                     {
                         <a class="card-character plate-logged-out" asp-action="Index" asp-controller="Account">
-                            <span class="card-portrait"></span>
+                            <span class="card-portrait"><img src="/account/@ViewBag.Account.Id/avatar" /></span>
                             <span class="login-msg"><strong>@User.Identity.Name</strong>，创建角色后可参与论坛交流等操作。</span>
                         </a>
                     }
                     else
                     {
                         <a class="card-character plate-logged-out @Html.GetFactionClassName(character.Faction)" asp-action="Index" asp-controller="Account">
-                            <span class="card-portrait"></span>
+                            <span class="card-portrait"><img src="/account/@ViewBag.Account.Id/avatar" /></span>
                             <div class="login-msg">
                                 <div class="login-character-name"><strong>@character.Name</strong></div>
                                 <div class="login-character-info">@(character.Level)级 @Html.GetRaceName(character.Race) <span style="color:@Html.ColorizeClass(character.Class)">@Html.GetClassName(character.Class)</span></div>

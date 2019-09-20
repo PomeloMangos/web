@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Html;
 using MySql.Data.MySqlClient;
 using Pomelo.WoW.Web.Models;
 using Pomelo.WoW.Web.Lib;
@@ -357,6 +359,49 @@ namespace Pomelo.WoW.Web.Controllers
                 x.Title = "修改密码成功";
                 x.Details = "您已成功修改了密码，请使用新密码登录门户网站及游戏客户端。";
             });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult AvatarSettings()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AvatarSettings(IFormFile file)
+        {
+            if (file.Length > 1024 * 1024 * 1)
+            {
+                return Prompt(x =>
+                {
+                    x.Title = "头像上传失败";
+                    x.Details = "头像必须小于1MB";
+                    x.StatusCode = 400;
+                });
+            }
+
+            using (var stream = file.OpenReadStream())
+            using (var reader = new BinaryReader(file.OpenReadStream()))
+            using (var conn = Account.GetAuthDb())
+            {
+                var bytes = reader.ReadBytes((int)file.Length);
+                await conn.ExecuteAsync(
+                    "UPDATE `pomelo_account` " +
+                    "SET `Avatar` = @bytes " +
+                    "WHERE `Id` = @Id;", 
+                    new { bytes, Account.Id });
+
+                return Prompt(x =>
+                {
+                    x.Title = "头像上传成功";
+                    x.Details = "新的头像已生效";
+                    x.HideBack = true;
+                    x.RedirectText = "返回";
+                    x.RedirectUrl = Url.Action("AvatarSettings");
+                });
+            }
         }
 
         [HttpGet("[controller]/{id}/avatar")]
