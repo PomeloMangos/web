@@ -423,6 +423,42 @@ namespace Pomelo.WoW.Web.Controllers
             }
         }
 
+        public IActionResult Move()
+        {
+            return Prompt(x =>
+            {
+                x.Title = "功能暂未开放";
+                x.Details = "角色转移服务暂未开放，请您关注公告。";
+            });
+        }
+
+        public IActionResult FindItem()
+        {
+            return Prompt(x =>
+            {
+                x.Title = "功能暂未开放";
+                x.Details = "物品误删找回功能暂未开放，请您关注公告。";
+            });
+        }
+
+        public IActionResult FindCharacter()
+        {
+            return Prompt(x =>
+            {
+                x.Title = "功能暂未开放";
+                x.Details = "角色误删找回功能暂未开放，请您关注公告。";
+            });
+        }
+
+        public IActionResult Transmog()
+        {
+            return Prompt(x =>
+            {
+                x.Title = "功能暂未开放";
+                x.Details = "请在游戏内使用幻化功能，网页版暂未开放。";
+            });
+        }
+
         private async Task SetDefaultCharacterAsync(ulong accountId, MySqlConnection conn)
         {
             var characters = await CharacterCollector.FindCharactersAsync(accountId);
