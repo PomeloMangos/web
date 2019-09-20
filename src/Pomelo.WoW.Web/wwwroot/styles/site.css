@@ -2337,7 +2337,7 @@ a:hover .forum-title {
 }
 
 .thread-list-header {
-    padding: 30px;
+    padding: 10px 30px 30px 30px;
 }
 
 .thread-list {
@@ -2619,4 +2619,30 @@ td .comment-item:last-child {
 .new-comment {
     border-left: 5px solid #ffb100;
     padding: 5px 10px;
+}
+
+.post-role {
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+.header-nav {
+    padding: 7px 30px;
+}
+
+.header-icon {
+    float: left;
+    vertical-align: middle;
+    height: 32px;
+    margin-right: 15px;
+}
+
+.header-text {
+    vertical-align: middle;
+}
+
+.banner-icon {
+    float: left;
+    margin-top: -10px;
+    margin-right: 20px;
 }

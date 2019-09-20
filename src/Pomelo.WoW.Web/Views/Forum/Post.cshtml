@@ -43,8 +43,18 @@
 
 <div class="container">
     <div id="wp" class="wp">
+        <div class="header-nav">
+            <a class="header-nav-item" href="/forum">论坛</a>
+            <span>»</span>
+            <a class="header-nav-item" href="/forum/@thread.ForumId">@ViewBag.ForumName</a>
+            <span>»</span>
+            <span>@thread.Title</span>
+        </div>
         <div class="thread-list-header">
-            <div class="thread-list-header-title">@thread.Title</div>
+            <div class="thread-list-header-title">
+                <img src="~/images/logo-small-wow.png" class="header-icon" />
+                <span class="header-text">@thread.Title</span>
+            </div>
             <div class="thread-list">
                 <table class="table-post">
                     <colgroup>
@@ -68,12 +78,12 @@
                                 <p class="post-role">
                                     @if (string.IsNullOrEmpty(thread.CharacterNickname))
                                     {
-                                        <span>普通用户</span>
+                                    <span>普通用户</span>
                                     }
                                     else
                                     {
-                                        <span>@(thread.CharacterLevel)级 @Html.GetRaceName(thread.CharacterRace)</span>
-                                        <span style="color: @Html.ColorizeClass(thread.CharacterClass)">@Html.GetClassName(thread.CharacterClass)</span>
+                                    <span>@(thread.CharacterLevel)级 @Html.GetRaceName(thread.CharacterRace)</span>
+                                    <span style="color: @Html.ColorizeClass(thread.CharacterClass)">@Html.GetClassName(thread.CharacterClass)</span>
                                     }
                                 </p>
                             </td>
@@ -93,8 +103,8 @@
                                 }
                                 @if (isAdmin)
                                 {
-                                <a href="javascript:Pin()">置顶/取消置顶</a>
-                                <a href="javascript:Lock()">锁定/解锁</a>
+                                <a href="javascript:Pin()">@(thread.IsPinned ? "取消置顶" : "置顶")</a>
+                                <a href="javascript:Lock()">@(thread.IsLocked ? "解锁" : "锁定")</a>
                                 }
                                 <span class="table-post-time">发表于 @thread.Time.ToString("yyyy-MM-dd HH:mm")</span>
                                 <hr>
@@ -118,84 +128,84 @@
                         </tr>
                         @foreach (var x in Model)
                         {
-                            <tr data-id="@x.Id">
-                                <td class="center">
-                                    <div class="center">
-                                        <span class="@(x.Role >= AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(x.CharacterNickname) ? x.CharacterNickname : x.AccountName)</span>
-                                    </div>
-                                    <hr />
-                                    <p><img class="post-avatar @(x.Role >= AccountLevel.Master ? "master" : "")" src="/account/@x.AccountId/avatar"></p>
-                                    <p class="post-role">
-                                        @if (string.IsNullOrEmpty(x.CharacterNickname))
+                        <tr data-id="@x.Id">
+                            <td class="center">
+                                <div class="center">
+                                    <span class="@(x.Role >= AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(x.CharacterNickname) ? x.CharacterNickname : x.AccountName)</span>
+                                </div>
+                                <hr />
+                                <p><img class="post-avatar @(x.Role >= AccountLevel.Master ? "master" : "")" src="/account/@x.AccountId/avatar"></p>
+                                <p class="post-role">
+                                    @if (string.IsNullOrEmpty(x.CharacterNickname))
                                         {
-                                            <span>普通用户</span>
+                                    <span>普通用户</span>
                                         }
                                         else
                                         {
-                                            <span>@(x.CharacterLevel)级 @Html.GetRaceName(x.CharacterRace)</span>
-                                            <span style="color: @Html.ColorizeClass(x.CharacterClass)">@Html.GetClassName(x.CharacterClass)</span>
+                                    <span>@(x.CharacterLevel)级 @Html.GetRaceName(x.CharacterRace)</span>
+                                    <span style="color: @Html.ColorizeClass(x.CharacterClass)">@Html.GetClassName(x.CharacterClass)</span>
                                         }
-                                    </p>
-                                </td>
-                                <td>
-                                    @if (thread.AccountId == x.AccountId)
+                                </p>
+                            </td>
+                            <td>
+                                @if (thread.AccountId == x.AccountId)
                                     {
-                                        <span class="thread-label">楼主</span>
+                                <span class="thread-label">楼主</span>
                                     }
-                                    @if (User.Identity.IsAuthenticated)
+                                @if (User.Identity.IsAuthenticated)
                                     {
-                                        @if (x.SubThreads.Count == 0)
+                                @if (x.SubThreads.Count == 0)
                                         {
-                                            <a href="javascript:Post('@x.Id')">回复</a>
+                                <a href="javascript:Post('@x.Id')">回复</a>
                                         }
-                                        @if (isAdmin || x.AccountId == account.Id)
+                                @if (isAdmin || x.AccountId == account.Id)
                                         {
-                                            <a href="javascript:EditPost('@x.Id')">编辑</a>
-                                            <a href="javascript:Remove('@x.Id')">删除</a>
+                                <a href="javascript:EditPost('@x.Id')">编辑</a>
+                                <a href="javascript:Remove('@x.Id')">删除</a>
                                         }
                                     }
-                                    <span class="table-post-time">回复于 @x.Time.ToString("yyyy-MM-dd HH:mm")</span>
-                                    <hr />
-                                    <div class="post-content @(x.Role >= AccountLevel.Master ? "master-color" : "")">@Html.Marked(x.Content)</div>
-                                    <div class="post-edit"></div>
-                                    @if (x.SubThreads.Count > 0)
+                                <span class="table-post-time">回复于 @x.Time.ToString("yyyy-MM-dd HH:mm")</span>
+                                <hr />
+                                <div class="post-content @(x.Role >= AccountLevel.Master ? "master-color" : "")">@Html.Marked(x.Content)</div>
+                                <div class="post-edit"></div>
+                                @if (x.SubThreads.Count > 0)
                                     {
-                                        <h3 class="comment-header">
-                                            楼内回复
-                                            @if (User.Identity.IsAuthenticated && (!thread.IsLocked || account.Role >= AccountLevel.Master))
+                                <h3 class="comment-header">
+                                    楼内回复
+                                    @if (User.Identity.IsAuthenticated && (!thread.IsLocked || account.Role >= AccountLevel.Master))
                                             {
-                                                <a href="javascript:Post('@x.Id')" class="add-comment">添加回复</a>
+                                    <a href="javascript:Post('@x.Id')" class="add-comment">添加回复</a>
                                             }
-                                        </h3>
+                                </h3>
                                         foreach (var y in x.SubThreads.OrderBy(z => z.Time))
                                         {
-                                            <div class="comment-item" data-id="@y.Id">
-                                                <img class="comment-avatar @(y.Role >= AccountLevel.Master ? "master" : "")" src="/account/@y.AccountId/avatar" />
-                                                <div class="comment-content">
-                                                    <p>
-                                                        @if (y.AccountId == thread.AccountId)
+                                <div class="comment-item" data-id="@y.Id">
+                                    <img class="comment-avatar @(y.Role >= AccountLevel.Master ? "master" : "")" src="/account/@y.AccountId/avatar" />
+                                    <div class="comment-content">
+                                        <p>
+                                            @if (y.AccountId == thread.AccountId)
                                                         {
-                                                            <span class="thread-label">楼主</span>
+                                            <span class="thread-label">楼主</span>
                                                         }
-                                                        <span class="center">
-                                                            <span class="@(y.Role >= AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(y.CharacterNickname) ? y.CharacterNickname : y.AccountName)</span>
-                                                        </span>
-                                                        <span class="table-post-time">@@@y.Time.ToString("yyyy-MM-dd HH:mm")</span>
-                                                        @if (User.Identity.IsAuthenticated && (y.AccountId == account.Id || account.Role >= AccountLevel.Master))
+                                            <span class="center">
+                                                <span class="@(y.Role >= AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(y.CharacterNickname) ? y.CharacterNickname : y.AccountName)</span>
+                                            </span>
+                                            <span class="table-post-time">@@@y.Time.ToString("yyyy-MM-dd HH:mm")</span>
+                                            @if (User.Identity.IsAuthenticated && (y.AccountId == account.Id || account.Role >= AccountLevel.Master))
                                                         {
-                                                            <a href="javascript:Remove('@y.Id')">删除</a>
+                                            <a href="javascript:Remove('@y.Id')">删除</a>
                                                         }
-                                                    </p>
-                                                    <div class="@(y.Role >= AccountLevel.Master ? "master-color" : "")">
-                                                        @Html.Marked(y.Content)
-                                                    </div>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
+                                        </p>
+                                        <div class="@(y.Role >= AccountLevel.Master ? "master-color" : "")">
+                                            @Html.Marked(y.Content)
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
                                         }
                                     }
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
                         }
 
                     </tbody>
@@ -208,16 +218,16 @@
         </div>
         @if (User.Identity.IsAuthenticated && (!thread.IsLocked || isAdmin))
         {
-            <div class="thread-post">
-                <form method="post" action="/forum/post">
-                    <input type="hidden" name="forumid" value="@thread.ForumId" />
-                    <input type="hidden" name="parentid" value="@thread.Id" />
-                    <h3 style="margin-top: 15px;">内容</h3>
-                    <textarea class="markdown-editor" name="content"></textarea>
-                    <input type="hidden" name="parentid" value="" />
-                    <input type="submit" value="回复" style="margin-top: 15px;" class="large-button" />
-                </form>
-            </div>
+        <div class="thread-post">
+            <form method="post" action="/forum/post">
+                <input type="hidden" name="forumid" value="@thread.ForumId" />
+                <input type="hidden" name="parentid" value="@thread.Id" />
+                <h3 style="margin-top: 15px;">内容</h3>
+                <textarea class="markdown-editor" name="content"></textarea>
+                <input type="hidden" name="parentid" value="" />
+                <input type="submit" value="回复" style="margin-top: 15px;" class="large-button" />
+            </form>
+        </div>
         }
     </div>
 </div>

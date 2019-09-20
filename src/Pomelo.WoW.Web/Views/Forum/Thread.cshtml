@@ -6,8 +6,16 @@
 }
 <div class="container">
     <div id="wp" class="wp">
+        <div class="header-nav">
+            <a class="header-nav-item" href="/forum">论坛</a>
+            <span>»</span> 
+            <span>@ViewBag.Forum.Name</span>
+        </div>
         <div class="thread-list-header">
-            <div class="thread-list-header-title">@ViewBag.Title</div>
+            <div class="thread-list-header-title">
+                <img src="~/images/logo-small-wow.png" class="header-icon" />
+                <span class="header-text">@ViewBag.Title</span>
+            </div>
             <div class="thread-list">
                 <table class="thread-table">
                     <colgroup>

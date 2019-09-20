@@ -250,6 +250,11 @@ namespace Pomelo.WoW.Web.Controllers
                 ViewBag.PageCount = pageCount;
                 ViewBag.Current = p;
 
+
+                ViewBag.ForumName = (await conn.QueryAsync<string>(
+                    "SELECT `Name` FROM `pomelo_forum_list` " +
+                    "WHERE `Id` = @ForumId;", new { thread.ForumId })).First();
+
                 return View(threads);
             }
         }
