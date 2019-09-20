@@ -49,6 +49,9 @@
                         }
                     </tbody>
                 </table>
+                <div class="pagination-outer">
+                    @Html.Pagination()
+                </div>
             </div>
         </div>
         @if (User.Identity.IsAuthenticated)

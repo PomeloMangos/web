@@ -35,7 +35,7 @@ namespace Pomelo.WoW.Web.Controllers
         }
 
         [HttpGet("forum/{id}")]
-        public async Task<IActionResult> Thread(string id, int page = 0)
+        public async Task<IActionResult> Thread(string id, int page = 1)
         {
             using (var conn = Forum.GetAuthDb())
             {
@@ -66,20 +66,22 @@ namespace Pomelo.WoW.Web.Controllers
                     "FROM `pomelo_forum_thread` " +
                     "INNER JOIN `pomelo_account` " +
                     "ON `pomelo_forum_thread`.`AccountId` = `pomelo_account`.`Id` " +
-                    "WHERE `ForumId` = @Id " +
+                    "WHERE (`ForumId` = @Id OR `IsPinned` = TRUE) " +
                     "AND `ParentId` IS NULL " +
                     "ORDER BY `IsPinned` ASC, `ReplyTime` DESC " +
-                    "LIMIT 20 OFFSET {0}", page * 20);
+                    "LIMIT 20 OFFSET {0}", (page - 1) * 20);
 
                 var threads = (await conn.QueryAsync<Thread>(queryStr, new { forum.Id })).ToList();
 
                 var count = (await conn.QueryAsync<int>(
                     "SELECT COUNT(1) FROM `pomelo_forum_thread` " +
-                    "WHERE `ForumId` = @Id AND `ParentId` IS NULL;")).First();
+                    "WHERE (`ForumId` = @Id OR `IsPinned` = TRUE) " +
+                    "AND `ParentId` IS NULL;", new { forum.Id })).First();
 
                 var pageCount = (count + 20 - 1) / 20;
                 ViewBag.Count = count;
                 ViewBag.PageCount = pageCount;
+                ViewBag.Current = page;
 
                 return View(threads);
             }

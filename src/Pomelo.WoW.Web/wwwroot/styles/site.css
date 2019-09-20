@@ -2433,3 +2433,32 @@ a:hover .forum-title {
     .post-textbox:focus {
         color: #ffb100;
     }
+
+.pagination-item {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 14px;
+    margin-right: 4px;
+    border: 1px solid;
+    border-color: #2b1507;
+    background-color: #2b1507;
+    background-repeat: no-repeat;
+    color: #d3ac6b;
+    line-height: 18px;
+    border-radius: 4px;
+}
+
+    .pagination-item:hover {
+        color: #ffb100;
+        text-decoration: none;
+        background-color: rgb(78,47,27);
+    }
+
+    .pagination-item.active {
+        background-color: #ffae00;
+        color: #000;
+    }
+
+.pagination-outer {
+    margin: 15px 30px 0;
+}
