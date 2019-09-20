@@ -45,6 +45,7 @@ namespace Pomelo.WoW.Web
             });
 
             services.AddAuthentication(x => x.DefaultScheme = Authentication.PomeloTokenHandler.Scheme).AddPomeloToken();
+            services.AddResponseCaching();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -61,8 +62,8 @@ namespace Pomelo.WoW.Web
             app.UseStaticFiles();
             app.UseSession();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
+            app.UseResponseCaching();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

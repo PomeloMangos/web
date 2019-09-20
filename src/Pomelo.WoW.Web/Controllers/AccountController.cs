@@ -404,6 +404,7 @@ namespace Pomelo.WoW.Web.Controllers
             }
         }
 
+        [ResponseCache(Duration = 60 * 60 * 24 * 7)]
         [HttpGet("[controller]/{id}/avatar")]
         public async Task<IActionResult> Avatar(ulong id)
         {
