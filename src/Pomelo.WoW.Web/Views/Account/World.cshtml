@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Database>
+@{ 
+    ViewBag.Title = "选择世界数据库 - 系统管理";
+    Character character = ViewBag.Character;
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title">选择世界数据库</div>
+                    <div>选择世界数据库后方可对其进行配置</div>
+                    <table class="realm-table" style="margin: 30px 0;">
+                        <thead>
+                            <tr>
+                                <th>数据库ID</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model)
+                            {
+                                <tr onclick="select(this)" data-id="@x.Id">
+                                    <td>#@x.Id</td>
+                                    <td>@x.Comment</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a href="javascript:;" id="btn-select" class="large-button">选择</a>
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<form id="form-select-world" asp-action="World" asp-controller="Account">
+    <input type="hidden" id="hid-id" name="id" value="" />
+</form>
+<script>
+    function select(obj) {
+        $('tr').removeClass('active');
+        $(obj).addClass('active');
+        $('#hid-id').val($(obj).attr('data-id'));
+    }
+
+    $('#btn-select').click(function () {
+        $('#form-select-world').submit();
+    });
+</script>

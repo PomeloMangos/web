@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Parameter>
+@{ 
+    ViewBag.Title = "功能参数设置 - 系统管理";
+    Character character = ViewBag.Character;
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title">功能参数设置</div>
+                    <div>设置游戏功能的各个参数</div>
+                    <table class="realm-table" style="margin: 30px 0;">
+                        <colgroup>
+                            <col />
+                            <col />
+                            <col />
+                            <col style="width: 50px" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>参数名</th>
+                                <th>值</th>
+                                <th>说明</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ 
+                                var i = 0;
+                            }
+                            @foreach (var x in Model)
+                            {
+                            <tr>
+                                <td>@x.Id</td>
+                                <td><input type="text" class="parameter-textbox" id="val-@i" value="@x.Value" /></td>
+                                <td>@x.Comment</td>
+                                <td><a href="javascript:save('@x.Id', @(i++));">保存</a></td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script>
+    function save(id, index) {
+        $.post('/account/parameter', { id: id, value: $('#val-' + index).val() }, function () {
+            alert('保存成功');
+        });
+    }
+</script>

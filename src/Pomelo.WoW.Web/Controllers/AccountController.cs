@@ -16,6 +16,7 @@ namespace Pomelo.WoW.Web.Controllers
 {
     public class AccountController : ControllerBase
     {
+        #region Player
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
@@ -506,5 +507,63 @@ namespace Pomelo.WoW.Web.Controllers
                     CharacterLevel = level
                 });
         }
+        #endregion
+
+        #region Administrator
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public IActionResult World()
+        {
+            return View(ModelBase.EnumerateWorldDbs());
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public IActionResult World(uint id)
+        {
+            HttpContext.Session.SetInt32("world", (int)id);
+            return Prompt(x =>
+            {
+                x.Title = "选择成功";
+                x.Details = "现在您可以对这个世界数据库进行操作了";
+            });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Parameter()
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = Models.Parameter.GetWorldDb(db))
+            {
+                return View((await conn.QueryAsync<Parameter>("SELECT * FROM `pomelo_config`;")).ToList());
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Parameter(string id, string value)
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = Models.Parameter.GetWorldDb(db))
+            {
+                await conn.ExecuteAsync(
+                    "UPDATE `pomelo_config` " +
+                    "SET `value` = @value " +
+                    "WHERE `entry` = @id;", new { id, value });
+                return Prompt(x =>
+                {
+                    x.Title = "操作成功";
+                    x.Details = "服务器参数已修改";
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Stone(int id = 0)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

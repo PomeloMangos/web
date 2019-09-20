@@ -1,7 +1,21 @@
 ﻿@{ 
     var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
+    Account account = ViewBag.Account;
+    var world = Context.Session.GetInt32("world");
 }
     <div class="right2">
+        @if (account.Role >= AccountLevel.Administrator)
+        {
+            <h3 class="sidebar-menu-title first">世界数据 - @(world.HasValue ? "#" + world.Value : "未选择")</h3>
+            <a asp-action="World" class="sidebar-menu-item @(action == "world" ? "active" : "")"><i class="fa fa-database"></i> 选择世界数据库</a>
+            @if (world.HasValue)
+            {
+                <a asp-action="Parameter" class="sidebar-menu-item @(action == "parameter" ? "active" : "")"><i class="fa fa-cog"></i> 功能参数设置</a>
+                <a asp-action="Stone" class="sidebar-menu-item @(action == "stone" ? "active" : "")"><i class="fa fa-diamond"></i> 宝石菜单设置</a>
+            }
+            <div style="margin-bottom: 25px;"></div>
+        }
+
         <h3 class="sidebar-menu-title first">角色管理</h3>
         <a asp-action="Index" class="sidebar-menu-item @(action == "index" ? "active" : "")"><i class="fa fa-user-circle-o"></i> 我的角色</a>
         <a asp-action="Stuck" class="sidebar-menu-item @(action == "stuck" ? "active" : "")"><i class="fa fa-stethoscope"></i> 角色卡死</a>
@@ -11,7 +25,7 @@
         <a asp-action="Transmog" class="sidebar-menu-item @(action == "transmogrified" ? "active" : "")"><i class="fa fa-sun-o"></i> 幻化系统</a>
 
         <h3 class="sidebar-menu-title">账号管理</h3>
-        <a asp-action="AvatarSettings" class="sidebar-menu-item @(action == "avatar" ? "active" : "")"><i class="fa fa-file-image-o"></i> 设置头像</a>
+        <a asp-action="AvatarSettings" class="sidebar-menu-item @(action == "avatarsettings" ? "active" : "")"><i class="fa fa-file-image-o"></i> 设置头像</a>
         <a asp-action="Currency" class="sidebar-menu-item @(action == "currency" ? "active" : "")"><i class="fa fa-money"></i> 积分查询</a>
         <a asp-action="FindCharacter" class="sidebar-menu-item @(action == "findcharacter" ? "active" : "")"><i class="fa fa-trash"></i> 角色误删找回</a>
         <a asp-action="Password" class="sidebar-menu-item @(action == "password" ? "active" : "")"><i class="fa fa-lock"></i> 修改密码</a>

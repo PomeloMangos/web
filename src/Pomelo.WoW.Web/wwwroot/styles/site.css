@@ -2654,3 +2654,29 @@ td .comment-item:last-child {
 .news-item-content {
     font-size: 14px;
 }
+
+.realm-table tr.active {
+    background: rgba(150, 223, 81, 0.05);
+    box-shadow: 0 0 10px #96df51;
+}
+
+.parameter-textbox {
+    border: .5px solid #7d2605;
+    font-size: 14px;
+    line-height: 24px;
+    height: 24px;
+    width: 95%;
+    display: block;
+    background: #311b0e;
+    outline: 0;
+    padding: 0 10px;
+    color: #efc9a0;
+}
+
+    .parameter-textbox:hover, .parameter-textbox:focus {
+        border-color: #ffb100;
+    }
+
+    .parameter-textbox:focus {
+        color: #ffb100;
+    }

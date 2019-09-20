@@ -15,6 +15,11 @@ namespace Pomelo.WoW.Web.Models
             GetDatabases();
         }
 
+        public static IEnumerable<Database> EnumerateWorldDbs()
+        {
+            return _db.Where(x => !x.RealmId.HasValue);
+        }
+
         public static MySqlConnection GetAuthDb()
         {
             return new MySqlConnection(Startup.Configuration["Database"]);
