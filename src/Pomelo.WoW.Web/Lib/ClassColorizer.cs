@@ -1,4 +1,6 @@
-﻿using Pomelo.WoW.Web.Models;
+﻿using Microsoft.AspNetCore.Html;
+using Pomelo.WoW.Web.Models;
+using Pomelo.AntiXSS;
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
@@ -99,5 +101,9 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
             }
         }
 
+        public static HtmlString Marked(this IHtmlHelper self, string src)
+        {
+            return new HtmlString(Instance.Sanitize(Pomelo.Marked.Instance.Parse(src)));
+        }
     }
 }

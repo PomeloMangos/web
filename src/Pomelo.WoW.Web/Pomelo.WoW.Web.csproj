@@ -8,11 +8,17 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="MySqlConnector" Version="0.57.0-rc1" />
+    <PackageReference Include="Pomelo.AntiXss" Version="2.0.0-rtm-10044" />
+    <PackageReference Include="Pomelo.Marked" Version="2.0.0-rtm-10044" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +48,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Account\_AccountNav.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Forum\Post.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Forum\Thread.cshtml">

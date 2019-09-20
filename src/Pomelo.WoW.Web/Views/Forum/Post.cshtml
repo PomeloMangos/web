@@ -1,0 +1,322 @@
+﻿@model IEnumerable<Thread>
+@{
+    Thread thread = ViewBag.Thread;
+    ViewBag.Title = thread.Title;
+    var isAdmin = User.Identity.IsAuthenticated && (User.IsInRole("Master") || User.IsInRole("Administrator"));
+    Account account = ViewBag.Account;
+}
+
+<div class="hidden" id="new-post-outer">
+    <div id="new-post" class="new-comment">
+        <p>发表回复</p>
+        <form action="/forum/post" method="post" id="frmNewPost">
+            <input type="hidden" name="forumid" value="@thread.ForumId" />
+            <input type="hidden" name="parentid" id="new-post-pid" />
+            <div class="markdown-editor-outer">
+                <textarea class="markdown-editor" name="Content"></textarea>
+                <div class="markdown-editor-bottom">
+                    <a href="javascript:NewPost();">发表回复</a>
+                    <a href="javascript:$('#new-post-outer').append($('#new-post'))">取消回复</a>
+                    支持Markdown语法、拖拽图片文件至编辑区或直接从剪贴板粘贴可上传图片文件。
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="hidden" id="edit-post-outer">
+    <div id="edit-post">
+        <form action="/forum/post" method="post" id="frmEditPost">
+            <input type="hidden" name="id" id="post-edit-id" />
+            <input type="hidden" name="forumid" value="@thread.ForumId" />
+            <div class="markdown-editor-outer">
+                <textarea class="markdown-editor" name="Content" id="txtEditPost"></textarea>
+                <div class="markdown-editor-bottom">
+                    <a href="javascript:EditPostSubmit()">保存修改</a>
+                    <a href="javascript:CancelEditPost()">取消编辑</a>
+                    支持Markdown语法、拖拽图片文件至编辑区或直接从剪贴板粘贴可上传图片文件。
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="thread-list-header">
+            <div class="thread-list-header-title">@thread.Title</div>
+            <div class="thread-list">
+                <table class="table-post">
+                    <colgroup>
+                        <col style="width: 160px;" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="center table-post-info">查看: @thread.VisitCount | 回复: @ViewBag.Count</th>
+                            <th class="text-left">@thread.Title</th>
+                        </tr>
+                    </thead>
+                    <tbody class="lst-posts">
+                        <tr>
+                            <td class="center">
+                                <div class="center">
+                                    <span class="@(thread.Role > AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(thread.CharacterNickname) ? thread.CharacterNickname : thread.AccountName)</span>
+                                </div>
+                                <hr>
+                                <p><img class="post-avatar @(thread.Role > AccountLevel.Master ? "master" : "")" src="/account/@thread.AccountId/avatar"></p>
+                                <p class="post-role">
+                                    @if (string.IsNullOrEmpty(thread.CharacterNickname))
+                                    {
+                                        <span>普通用户</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@(thread.CharacterLevel)级 @Html.GetRaceName(thread.CharacterRace)</span>
+                                        <span style="color: @Html.ColorizeClass(thread.CharacterClass)">@Html.GetClassName(thread.CharacterClass)</span>
+                                    }
+                                </p>
+                            </td>
+                            <td class="post-body">
+                                @if (thread.IsPinned)
+                                {
+                                <span class="thread-label purple">公告</span>
+                                }
+                                @if (thread.IsLocked)
+                                {
+                                <span class="thread-label purple">已锁定</span>
+                                }
+                                @if (User.Identity.IsAuthenticated && (isAdmin || thread.AccountId == account.Id))
+                                {
+                                <a href="javascript:EditThread()">编辑</a>
+                                <a href="javascript:Remove(@thread.Id)">删除</a>
+                                }
+                                @if (isAdmin)
+                                {
+                                <a href="javascript:Pin()">置顶/取消置顶</a>
+                                <a href="javascript:Lock()">锁定/解锁</a>
+                                }
+                                <span class="table-post-time">发表于 @thread.Time.ToString("yyyy-MM-dd HH:mm")</span>
+                                <hr>
+                                <div class="thread-content @(thread.Role >= AccountLevel.Master ? "master-color" : "")">
+                                    @Html.Marked(thread.Content)
+                                </div>
+                                <div class="thread-edit">
+                                    <form id="frmEditThread" action="/forum/post" method="post">
+                                        <input type="hidden" name="id" value="@thread.Id" />
+                                        <div class="markdown-editor-outer">
+                                            <textarea class="markdown-editor" id="txtEditThread" name="Content" style="display: none;">@thread.Content</textarea>
+                                            <div class="markdown-editor-bottom">
+                                                <a href="javascript:EditThreadSubmit()">保存修改</a>
+                                                <a href="javascript:CancelEditThread()">取消编辑</a>
+                                                支持Markdown语法、拖拽图片文件至编辑区或直接从剪贴板粘贴可上传图片文件。
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @foreach (var x in Model)
+                        {
+                            <tr data-id="@x.Id">
+                                <td class="center">
+                                    <div class="center">
+                                        <span class="@(x.Role >= AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(x.CharacterNickname) ? x.CharacterNickname : x.AccountName)</span>
+                                    </div>
+                                    <hr />
+                                    <p><img class="post-avatar @(x.Role >= AccountLevel.Master ? "master" : "")" src="/account/@x.AccountId/avatar"></p>
+                                    <p class="post-role">
+                                        @if (string.IsNullOrEmpty(x.CharacterNickname))
+                                        {
+                                            <span>普通用户</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@(x.CharacterLevel)级 @Html.GetRaceName(x.CharacterRace)</span>
+                                            <span style="color: @Html.ColorizeClass(x.CharacterClass)">@Html.GetClassName(x.CharacterClass)</span>
+                                        }
+                                    </p>
+                                </td>
+                                <td>
+                                    @if (thread.AccountId == x.AccountId)
+                                    {
+                                        <span class="thread-label">楼主</span>
+                                    }
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        @if (x.SubThreads.Count == 0)
+                                        {
+                                            <a href="javascript:Post('@x.Id')">回复</a>
+                                        }
+                                        @if (isAdmin || x.AccountId == account.Id)
+                                        {
+                                            <a href="javascript:EditPost('@x.Id')">编辑</a>
+                                            <a href="javascript:Remove('@x.Id')">删除</a>
+                                        }
+                                    }
+                                    <span class="table-post-time">回复于 @x.Time.ToString("yyyy-MM-dd HH:mm")</span>
+                                    <hr />
+                                    <div class="post-content @(x.Role >= AccountLevel.Master ? "master-color" : "")">@Html.Marked(x.Content)</div>
+                                    <div class="post-edit"></div>
+                                    @if (x.SubThreads.Count > 0)
+                                    {
+                                        <h3 class="comment-header">
+                                            楼内回复
+                                            @if (User.Identity.IsAuthenticated && (!thread.IsLocked || account.Role >= AccountLevel.Master))
+                                            {
+                                                <a href="javascript:Post('@x.Id')" class="add-comment">添加回复</a>
+                                            }
+                                        </h3>
+                                        foreach (var y in x.SubThreads.OrderBy(z => z.Time))
+                                        {
+                                            <div class="comment-item" data-id="@y.Id">
+                                                <img class="comment-avatar @(y.Role >= AccountLevel.Master ? "master" : "")" src="/account/@y.AccountId/avatar" />
+                                                <div class="comment-content">
+                                                    <p>
+                                                        @if (y.AccountId == thread.AccountId)
+                                                        {
+                                                            <span class="thread-label">楼主</span>
+                                                        }
+                                                        <span class="center">
+                                                            <span class="@(y.Role >= AccountLevel.Master ? "master-color" : "")">@(!string.IsNullOrEmpty(y.CharacterNickname) ? y.CharacterNickname : y.AccountName)</span>
+                                                        </span>
+                                                        <span class="table-post-time">@@@y.Time.ToString("yyyy-MM-dd HH:mm")</span>
+                                                        @if (User.Identity.IsAuthenticated && (y.AccountId == account.Id || account.Role >= AccountLevel.Master))
+                                                        {
+                                                            <a href="javascript:Remove('@y.Id')">删除</a>
+                                                        }
+                                                    </p>
+                                                    <div class="@(y.Role >= AccountLevel.Master ? "master-color" : "")">
+                                                        @Html.Marked(y.Content)
+                                                    </div>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+                <div class="pagination-outer">
+                    @Html.Pagination()
+                </div>
+            </div>
+        </div>
+        @if (User.Identity.IsAuthenticated && (!thread.IsLocked || isAdmin))
+        {
+            <div class="thread-post">
+                <form method="post" action="/forum/post">
+                    <input type="hidden" name="forumid" value="@thread.ForumId" />
+                    <input type="hidden" name="parentid" value="@thread.Id" />
+                    <h3 style="margin-top: 15px;">内容</h3>
+                    <textarea class="markdown-editor" name="content"></textarea>
+                    <input type="hidden" name="parentid" value="" />
+                    <input type="submit" value="回复" style="margin-top: 15px;" class="large-button" />
+                </form>
+            </div>
+        }
+    </div>
+</div>
+
+
+@if (isAdmin)
+{
+    <form asp-action="Pin" asp-controller="Forum" asp-route-id="@thread.Id" id="frm-pin"></form>
+    <form asp-action="Lock" asp-controller="Forum" asp-route-id="@thread.Id" id="frm-lock"></form>
+    <script>
+        function Pin() {
+            $('#frm-pin').submit();
+        }
+
+        function Lock() {
+            $('#frm-lock').submit();
+        }
+    </script>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="Remove" asp-controller="Forum" id="frm-remove">
+        <input type="hidden" name="id" id="remove-id" />
+    </form>
+    <script>
+        function Remove(id) {
+            if (confirm("您确定要删除吗？")) {
+                $('#remove-id').val(id);
+                $('#frm-remove').submit();
+            }
+        }
+
+    function Post(pid)
+    {
+        $('#new-post-pid').val(pid);
+        $('tr[data-id="' + pid + '"]').children('td').last().append($('#new-post'));
+    }
+
+    function NewPost()
+    {
+        $('#new-post-outer').append($('#new-post'));
+        $('#frmNewPost .markdown-editor').val($('#frmNewPost .markdown-editor')[0].smde.value());
+        $('#frmNewPost').submit();
+    }
+
+    $("#btnReply").click(function () {
+        $('#frmNewReply .markdown-editor[name="Content"]').val($('#frmNewReply .markdown-editor[name="Content"]')[0].smde.value());
+        $.post($('#frmNewReply').attr('action'), $('#frmNewReply').serialize(), function (data) {
+            render.Post(data, function () {
+                popResult('发表成功');
+                $('.markdown-editor').val('');
+                $('#frmNewReply .markdown-editor[name="Content"]')[0].smde.value("")
+            });
+        });
+    });
+
+    function EditThread()
+    {
+        $('.thread-content').hide();
+        $('.thread-edit').show();
+        $('#txtEditThread')[0].smde.value($('#txtEditThread').val());
+    }
+
+    function EditThreadSubmit() {
+        $('#frmEditThread .markdown-editor[name="Content"]').val($('#frmEditThread .markdown-editor[name="Content"]')[0].smde.value());
+        $('#frmEditThread').submit();
+    }
+
+    function CancelEditThread()
+    {
+        $('.thread-content').show();
+        $('.thread-edit').hide();
+    }
+
+    function EditPost(pid)
+    {
+        $('.post-content').hide();
+        $('.post-edit').show();
+        $('#post-edit-id').val(pid);
+        $.get('@Url.Action("Markdown", "Forum")', { id: pid }, function (data) {
+            $('tr[data-id="' + pid + '"]').children('td').last().children('.post-edit').append($('#edit-post'));
+            $('#txtEditPost')[0].smde.value(data);
+        });
+    }
+
+    function EditPostSubmit() {
+        $('#frmEditPost #txtEditPost').val($('#frmEditPost #txtEditPost')[0].smde.value());
+        $('#frmEditPost').submit();
+    }
+    function CancelEditPost()
+    {
+        $('#edit-post-outer').append($('#edit-post'))
+        $('.post-content').show();
+        $('.post-edit').hide();
+    }
+    </script>
+}
+
+<script>
+    var id = '@thread.Id';
+</script>

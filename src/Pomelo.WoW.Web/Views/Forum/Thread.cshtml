@@ -35,11 +35,11 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(x.CharacterNickname))
                                     {
-                                        <span style="@(x.Role >= AccountLevel.Master ? "color:#96df51" : "")">@x.CharacterNickname</span>
+                                        <span class="@(x.Role >= AccountLevel.Master ? "master-color" : "")">@x.CharacterNickname</span>
                                     }
                                     else
                                     {
-                                        <span style="@(x.Role >= AccountLevel.Master ? "color:#96df51" : "")">@x.AccountName</span>
+                                        <span class="@(x.Role >= AccountLevel.Master ? "master-color" : "")">@x.AccountName</span>
                                     }
                                 </td>
                                 <td>0</td>
@@ -57,12 +57,12 @@
         @if (User.Identity.IsAuthenticated)
         {
             <div class="thread-post">
-                <form method="post" asp-action="Post">
+                <form method="post" action="/forum/post">
                     <h3>主题</h3>
                     <input type="text" class="post-textbox" name="title" />
                     <h3 style="margin-top: 15px;">内容</h3>
                     <textarea class="markdown-editor" name="content"></textarea>
-                    <input type="hidden" name="id" value="@ViewBag.Forum.Id" />
+                    <input type="hidden" name="forumid" value="@ViewBag.Forum.Id" />
                     <input type="submit" value="发表" style="margin-top: 15px;" class="large-button" />
                 </form>
             </div>

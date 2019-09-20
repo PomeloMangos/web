@@ -116,7 +116,7 @@ namespace Pomelo.WoW.Web.Controllers
                     "SELECT LAST_INSERT_ID();", account);
 
                 await conn.ExecuteAsync(
-                    "INSERT INTO `account` (`id`, `username`, `gmlevel`, `v`, `s`, `email`, `joindate`, `expansion`, `last_login`)" +
+                    "INSERT INTO `account` (`id`, `username`, `gmlevel`, `v`, `s`, `email`, `joindate`, `expansion`)" +
                     "VALUES (@entry, @username, @gmlevel, @v, @s, @email, @joindate, @expansion)",
                     new
                     {
@@ -357,6 +357,24 @@ namespace Pomelo.WoW.Web.Controllers
                 x.Title = "修改密码成功";
                 x.Details = "您已成功修改了密码，请使用新密码登录门户网站及游戏客户端。";
             });
+        }
+
+        [HttpGet("[controller]/{id}/avatar")]
+        public async Task<IActionResult> Avatar(ulong id)
+        {
+            using (var conn = Account.GetAuthDb())
+            {
+                var bytes = (await conn.QueryAsync<byte[]>(
+                    "SELECT `Avatar` FROM `pomelo_account` WHERE `Id` = @id", 
+                    new { id })).SingleOrDefault();
+
+                if (bytes == null || bytes.Length == 0)
+                {
+                    return File(System.IO.File.ReadAllBytes(System.IO.Path.Combine("wwwroot", "images", "avatar-neutral.jpg")), "application/octet-stream");
+                }
+
+                return File(bytes, "application/octet-stream");
+            }
         }
 
         private async Task SetDefaultCharacterAsync(ulong accountId, MySqlConnection conn)

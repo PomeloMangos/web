@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Pomelo.WoW.Web.Models
 {
@@ -37,5 +38,7 @@ namespace Pomelo.WoW.Web.Models
         public DateTime Time { get; set; }
 
         public DateTime ReplyTime { get; set; }
+
+        public List<Thread> SubThreads { get; set; } = new List<Thread>();
     }
 }
