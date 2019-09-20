@@ -1,0 +1,67 @@
+﻿@model IEnumerable<StoneMenu>
+@{ 
+    ViewBag.Title = "宝石菜单设置 - 系统管理";
+    Character character = ViewBag.Character;
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title">宝石菜单设置</div>
+                    <div>定制宝石菜单及功能</div>
+                    <table class="realm-table" style="margin: 30px 0;">
+                        <colgroup>
+                            <col />
+                            <col />
+                            <col />
+                            <col style="width: 50px" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>菜单ID</th>
+                                <th>功能</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @if (x.Function == 0)
+                                    {
+                                    <a asp-action="Stone" asp-route-id="@x.TriggerMenu">@x.MenuItemText</a>
+                                    }
+                                    else
+                                    {
+                                    <span>@x.MenuItemText</span>
+                                    }
+                                </td>
+                                <td>@(x.MenuId)-@(x.ActionId)</td>
+                                <td>@StoneMenu.FunctionText[x.Function]</td>
+                                <td>
+                                    <a asp-action="EditStone" asp-route-id="@x.Id">编辑</a>
+                                    <a href="javascript:delete(@x.Id);">删除</a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<form asp-action="DeleteStoneMenu" id="form-delete-stone-menu">
+    <input type="hidden" id="hid-id" />
+</form>
+<script>
+    function delete (id) {
+        $('#hid-id').val(id);
+        $('#form-delete-stone-menu').submit();
+    }
+</script>

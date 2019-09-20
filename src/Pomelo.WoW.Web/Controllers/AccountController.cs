@@ -560,9 +560,17 @@ namespace Pomelo.WoW.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Stone(int id = 0)
         {
-            throw new NotImplementedException();
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                var menu = (await conn.QueryAsync<StoneMenu>(
+                    "SELECT * FROM `pomelo_teleport_template` " +
+                    "WHERE `menu_id` = @id;", new { id })).ToList();
+                return View(menu);
+            }
         }
         #endregion
     }
