@@ -13,10 +13,11 @@ namespace Pomelo.WoW.Web.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            using (var conn = Announce.GetAuthDb())
+            using (var conn = Thread.GetAuthDb())
             {
-                var query = await conn.QueryAsync<Announce>(
-                    "SELECT * FROM `pomelo_announce` " +
+                var query = await conn.QueryAsync<Thread>(
+                    "SELECT * FROM `pomelo_forum_thread` " +
+                    "WHERE `IsPinned` = TRUE " +
                     "ORDER BY `Time` DESC LIMIT 10;");
                 var ret = query.ToList();
                 return View(ret);

@@ -1893,12 +1893,12 @@ a.nav-client .nav-bar-item.active {
 .block {
     background: #211308;
     box-shadow: 0 0 10px rgba(0,0,0,.3);
-    background-image: url(../images/gradient.png);
+    background-image: url(../images/bg-index.jpg);
     background-position-x: left;
-    background-position-y: top;
+    background-position-y: -4px;
     background-repeat: no-repeat;
     margin: 0;
-    margin-bottom: 30px
+    margin-bottom: 30px;
 }
 
 .card-menu-item {
@@ -2645,4 +2645,12 @@ td .comment-item:last-child {
     float: left;
     margin-top: -10px;
     margin-right: 20px;
+}
+
+.thread-content p, .news-item-content p {
+    padding-bottom: 15px;
+}
+
+.news-item-content {
+    font-size: 14px;
 }
