@@ -137,7 +137,7 @@
                                     <td>
                                         <label>
                                             地图ID
-                                            <input type="text" v-model="model.teleportZ" autocomplete="off" class="parameter-textbox">
+                                            <input type="text" v-model="model.teleportMap" autocomplete="off" class="parameter-textbox">
                                         </label>
                                     </td>
                                 </tr>
@@ -207,8 +207,8 @@
                         </div>
                         <a class="large-button medium" v-on:click="save()">保存</a>
                         <a class="large-button medium" asp-action="Stone" asp-route-id="@Model.MenuId">返回</a>
-                        <form id="form-save-stone-menu" method="post">
-                            <input type="hidden" name="body" v-model="body" />
+                        <form id="form-save-stone-menu" asp-action="EditStone" asp-route-id="@Model.Id" method="post">
+                            <input type="hidden" name="body" id="hid-body" />
                         </form>
                     </div>
                 </div>
@@ -233,7 +233,6 @@
             cost_types: ["免费", "金钱", "自定义货币"],
             permissions: ["普通玩家", "高级玩家", "游戏管理员", "超级管理员"],
             currencies: @Json.Serialize(ViewBag.Currencies),
-            body: ''
         },
         watch: {
             deep: true
@@ -242,7 +241,7 @@
         },
         methods: {
             save: function () {
-                this.body = JSON.stringify(this.model);
+                $('#hid-body').val(JSON.stringify(this.model));
                 $('#form-save-stone-menu').submit();
             }
         }

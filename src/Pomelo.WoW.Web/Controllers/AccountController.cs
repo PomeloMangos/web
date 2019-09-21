@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Html;
+using Newtonsoft.Json;
 using MySql.Data.MySqlClient;
 using Pomelo.WoW.Web.Models;
 using Pomelo.WoW.Web.Lib;
@@ -602,6 +603,47 @@ namespace Pomelo.WoW.Web.Controllers
                 }
 
                 return View(menu);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditStone(uint id, string body)
+        {
+            var menu = JsonConvert.DeserializeObject<StoneMenu>(body);
+            menu.Id = id;
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                var origin = (await conn.QueryAsync<StoneMenu>(
+                    "SELECT * FROM `pomelo_teleport_template` " +
+                    "WHERE `entry` = @id;",
+                    new { id })).SingleOrDefault();
+
+                var modifyId = "`menu_id` = @MenuId, `action_id` = @ActionId, ";
+                if (origin.MenuId == menu.MenuId && origin.ActionId == menu.ActionId)
+                {
+                    modifyId = "";
+                }
+
+                await conn.ExecuteAsync(
+                    "UPDATE `pomelo_teleport_template` " +
+                    "SET `menu_item_text` = @MenuItemText, `icon` = @Icon, " +
+                    modifyId +
+                    "`function` = @Function, `teleport_map` = @TeleportMap, " +
+                    "`teleport_x` = @TeleportX, `teleport_y` = @TeleportY, " +
+                    "`teleport_z` = @TeleportZ, `cost_type` = @CostType, " +
+                    "`cost_amount` = @CostAmount, `cost_custom_currency_id` = @CostCurrencyId, " +
+                    "`level_required` = @LevelRequired, `permission_required` = @PermissionRequired, " +
+                    "`trigger_menu` = @TriggerMenu, `faction_order` = @FactionOrder " +
+                    "WHERE `entry` = @Id; ", menu);
+                return Prompt(x =>
+                {
+                    x.Title = "编辑成功";
+                    x.Details = "菜单已经成功保存";
+                    x.RedirectText = "返回上级菜单";
+                    x.RedirectUrl = Url.Action("Stone", new { id = menu.MenuId });
+                });
             }
         }
         #endregion
