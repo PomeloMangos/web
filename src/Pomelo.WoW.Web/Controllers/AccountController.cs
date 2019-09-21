@@ -562,7 +562,7 @@ namespace Pomelo.WoW.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Stone(int id = 0)
+        public async Task<IActionResult> Stone(uint id = 0)
         {
             uint db = (uint)HttpContext.Session.GetInt32("world");
             using (var conn = StoneMenu.GetWorldDb(db))
@@ -570,6 +570,10 @@ namespace Pomelo.WoW.Web.Controllers
                 var menu = (await conn.QueryAsync<StoneMenu>(
                     "SELECT * FROM `pomelo_teleport_template` " +
                     "WHERE `menu_id` = @id;", new { id })).ToList();
+                if (id != 0)
+                {
+                    ViewBag.Prev = await FindParentMenuAsync(id);
+                }
                 return View(menu);
             }
         }
@@ -644,6 +648,100 @@ namespace Pomelo.WoW.Web.Controllers
                     x.RedirectText = "返回上级菜单";
                     x.RedirectUrl = Url.Action("Stone", new { id = menu.MenuId });
                 });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> RemoveStone(uint id)
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                var menuId = (await conn.QueryAsync<uint?>(
+                    "SELECT `menu_id` FROM `pomelo_teleport_template` " +
+                    "WHERE `entry` = @id;", new { id })).FirstOrDefault();
+
+                if (!menuId.HasValue)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "删除失败";
+                        x.Details = "您指定的菜单项没有找到";
+                        x.StatusCode = 404;
+                    });
+                }
+
+                await conn.ExecuteAsync(
+                    "DELETE FROM `pomelo_teleport_template` " +
+                    "WHERE `entry` = @id;", new { id });
+
+                var cnt = (await conn.QueryAsync<int>(
+                    "SELECT COUNT(1) FROM `pomelo_teleport_template` " +
+                    "WHERE `menu_id` = @menuId", new { menuId = menuId.Value })).Single();
+
+                uint? parentId = await FindParentMenuAsync(menuId.Value);
+
+                return Prompt(x =>
+                {
+                    x.Title = "删除成功";
+                    x.Details = "该菜单项已被成功删除";
+                    x.RedirectText = cnt == 0 ? "返回上级菜单" : "返回菜单列表";
+                    x.RedirectUrl = cnt == 0 ? Url.Action("Stone", new { id = parentId }) : Url.Action("Stone", new { id = menuId });
+                });
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public IActionResult CreateStone(int id)
+        {
+            ViewBag.MenuId = id;
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CreateStone(uint id, string body)
+        {
+            var menu = JsonConvert.DeserializeObject<StoneMenu>(body);
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                await conn.ExecuteAsync(
+                    "INSERT INTO `pomelo_teleport_template` " +
+                    "(`menu_id`, `action_id`, `icon`, `menu_item_text`, " +
+                    "`teleport_x`, `teleport_y`, `teleport_z`, `teleport_map`, " +
+                    "`function`, `cost_type`, `cost_amount`, " +
+                    "`cost_custom_currency_id`, `level_required`, " +
+                    "`permission_required`, `trigger_menu`, `faction_order`) " +
+                    "VALUES (@MenuId, @ActionId, @Icon, @MenuItemText," +
+                    "@TeleportX, @TeleportY, @TeleportZ, @TeleportMap, " +
+                    "@Function, @CostType, @CostAmount, @CostCurrencyId," +
+                    "@LevelRequired, @PermissionRequired, @TriggerMenu," +
+                    "@FactionOrder);", menu);
+
+                return Prompt(x =>
+                {
+                    x.Title = "创建成功";
+                    x.Details = "新的菜单项已经创建";
+                    x.RedirectText = "返回菜单列表";
+                    x.RedirectUrl = Url.Action("Stone", new { id });
+                });
+            }
+        }
+
+        private async Task<uint?> FindParentMenuAsync(uint menuId)
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                var id = (await conn.QueryAsync<uint?>(
+                    "SELECT `menu_id` " +
+                    "FROM `pomelo_teleport_template` " +
+                    "WHERE `trigger_menu` = @menuId;",
+                    new { menuId })).FirstOrDefault();
+                return id;
             }
         }
         #endregion

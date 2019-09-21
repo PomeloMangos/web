@@ -2,6 +2,7 @@
 @{ 
     ViewBag.Title = "宝石菜单设置 - 系统管理";
     Character character = ViewBag.Character;
+    var id = Convert.ToUInt32(ViewContext.RouteData.Values["id"]);
 }
 <div class="container">
     <div id="wp" class="wp">
@@ -28,27 +29,32 @@
                         <tbody>
                             @foreach (var x in Model)
                             {
-                            <tr>
-                                <td>
-                                    @if (x.Function == 0)
-                                    {
-                                    <a asp-action="Stone" asp-route-id="@x.TriggerMenu">@x.MenuItemText</a>
-                                    }
-                                    else
-                                    {
-                                    <span>@x.MenuItemText</span>
-                                    }
-                                </td>
-                                <td>@(x.MenuId)-@(x.ActionId)</td>
-                                <td>@StoneMenu.FunctionText[x.Function]</td>
-                                <td>
-                                    <a asp-action="EditStone" asp-route-menuid="@x.MenuId" asp-route-actionid="@x.ActionId">编辑</a>
-                                    <a href="javascript:delete(@x.Id);">删除</a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        @if (x.Function == 0)
+                                        {
+                                            <a asp-action="Stone" asp-route-id="@x.TriggerMenu">@x.MenuItemText</a>
+                                        }
+                                        else
+                                        {
+                                            <span>@x.MenuItemText</span>
+                                        }
+                                    </td>
+                                    <td>@(x.MenuId)-@(x.ActionId)</td>
+                                    <td>@StoneMenu.FunctionText[x.Function]</td>
+                                    <td>
+                                        <a asp-action="EditStone" asp-route-menuid="@x.MenuId" asp-route-actionid="@x.ActionId">编辑</a>
+                                        <a href="javascript:remove(@x.Id);">删除</a>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
+                    <a class="large-button medium" asp-action="CreateStone" asp-route-id="@id">创建菜单项</a>
+                    @if (id > 0)
+                    {
+                        <a class="large-button medium" asp-action="Stone" asp-route-id="@ViewBag.Prev">返回上一级</a>
+                    }
                 </div>
             </div>
             @await Html.PartialAsync("_AccountNav")
@@ -56,11 +62,11 @@
         </div>
     </div>
 </div>
-<form asp-action="DeleteStoneMenu" id="form-delete-stone-menu">
-    <input type="hidden" id="hid-id" />
+<form asp-action="RemoveStone" id="form-delete-stone-menu">
+    <input type="hidden" name="id" id="hid-id" />
 </form>
 <script>
-    function delete (id) {
+    function remove (id) {
         $('#hid-id').val(id);
         $('#form-delete-stone-menu').submit();
     }

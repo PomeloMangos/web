@@ -32,6 +32,9 @@
     <Content Update="Views\Account\AvatarSettings.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Account\CreateStone.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Account\EditStone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
