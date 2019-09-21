@@ -1863,6 +1863,11 @@ a.nav-client .nav-bar-item.active {
         color: #c47122;
     }
 
+    .large-button.medium {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+
     .large-button:hover {
         text-decoration: none;
         color: #fff !important;
@@ -2680,3 +2685,28 @@ td .comment-item:last-child {
     .parameter-textbox:focus {
         color: #ffb100;
     }
+
+select.parameter-textbox {
+    width: 98.5%;
+}
+
+.form-item {
+    margin-bottom: 15px;
+}
+
+    .form-item input {
+        font-size: 12px;
+    }
+
+.grid-table input[type="text"].parameter-textbox {
+    width: calc(100% - 20px)!important;
+}
+
+.grid-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.grid-table td {
+    padding: 10px;
+}

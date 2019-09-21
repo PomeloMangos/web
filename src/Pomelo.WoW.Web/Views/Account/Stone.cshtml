@@ -42,7 +42,7 @@
                                 <td>@(x.MenuId)-@(x.ActionId)</td>
                                 <td>@StoneMenu.FunctionText[x.Function]</td>
                                 <td>
-                                    <a asp-action="EditStone" asp-route-id="@x.Id">编辑</a>
+                                    <a asp-action="EditStone" asp-route-menuid="@x.MenuId" asp-route-actionid="@x.ActionId">编辑</a>
                                     <a href="javascript:delete(@x.Id);">删除</a>
                                 </td>
                             </tr>

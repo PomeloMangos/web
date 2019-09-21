@@ -572,6 +572,38 @@ namespace Pomelo.WoW.Web.Controllers
                 return View(menu);
             }
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditStone(uint menuId, uint actionId)
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                var menu = (await conn.QueryAsync<StoneMenu>(
+                    "SELECT * FROM `pomelo_teleport_template` " +
+                    "WHERE `menu_id` = @menuId AND `action_id` = @actionId;", 
+                    new { menuId, actionId })).SingleOrDefault();
+                if (menu == null)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "没有找到菜单";
+                        x.Details = "您指定的宝石菜单没有找到，请返回重试";
+                        x.StatusCode = 404;
+                    });
+                }
+
+                using (var conn2 = CustomCurrency.GetAuthDb())
+                {
+                    var currencies = await conn2.QueryAsync<CustomCurrency>(
+                        "SELECT * FROM `pomelo_currency`;");
+                    ViewBag.Currencies = currencies;
+                }
+
+                return View(menu);
+            }
+        }
         #endregion
     }
 }

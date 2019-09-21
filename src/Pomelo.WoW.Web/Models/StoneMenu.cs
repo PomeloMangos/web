@@ -75,7 +75,7 @@ namespace Pomelo.WoW.Web.Models
         [Column("cost_type")]
         public CostType CostType { get; set; }
 
-        [Column("cost_currency_id")]
+        [Column("cost_custom_currency_id")]
         public uint CostCurrencyId { get; set; }
     }
 }
