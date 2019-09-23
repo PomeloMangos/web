@@ -757,7 +757,7 @@ namespace Pomelo.WoW.Web.Controllers
                     "WHERE `entry` = @id;", new { id });
                 return Prompt(x =>
                 {
-                    x.Title = $"{(status ? "开启" : "禁用")}副本成功";
+                    x.Title = $"{(status ? "禁用" : "开启")}副本成功";
                     x.Details = "已更新副本开关状态";
                 });
             }
