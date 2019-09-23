@@ -1,0 +1,62 @@
+﻿@model IEnumerable<DungeonSwitch>
+@{ 
+    ViewBag.Title = "副本开关 - 系统管理";
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title">副本开关</div>
+                    <div>设置该服务器开放的副本。</div>
+                    <table class="realm-table" style="margin: 30px 0;">
+                        <colgroup>
+                            <col />
+                            <col />
+                            <col />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>副本</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var x in Model)
+                            {
+                            <tr>
+                                <td>@x.Comment</td>
+                                <td>@(x.Disabled ? "禁用" : "开放")</td>
+                                <td>
+                                    @if (x.Disabled)
+                                    {
+                                        <a href="javascript:turn(@x.Id, false);">开放</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascript:turn(@x.Id, true);">禁用</a>
+                                    }
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<form asp-action="Dungeon" id="form-dungeon">
+    <input name="id" id="hid-id" />
+    <input name="status" id="hid-status" />
+</form>
+<script>
+    function turn(id, status) {
+        $('#hid-id').val(id);
+        $('#hid-status').val(status);
+        $('#form-dungeon').submit();
+    }
+</script>

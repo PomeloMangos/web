@@ -731,6 +731,38 @@ namespace Pomelo.WoW.Web.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Dungeon()
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                var dungeons = (await conn.QueryAsync<DungeonSwitch>(
+                    "SELECT * FROM `pomelo_dungeon_switch`;")).ToList();
+                return View(dungeons);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Dungeon(uint id, bool status)
+        {
+            uint db = (uint)HttpContext.Session.GetInt32("world");
+            using (var conn = StoneMenu.GetWorldDb(db))
+            {
+                await conn.ExecuteAsync(
+                    "UPDATE `pomelo_dungeon_switch` " +
+                    $"SET `disabled` = {(status ? "TRUE" : "FALSE")} " +
+                    "WHERE `entry` = @id;", new { id });
+                return Prompt(x =>
+                {
+                    x.Title = $"{(status ? "开启" : "禁用")}副本成功";
+                    x.Details = "已更新副本开关状态";
+                });
+            }
+        }
+
         private async Task<uint?> FindParentMenuAsync(uint menuId)
         {
             uint db = (uint)HttpContext.Session.GetInt32("world");
