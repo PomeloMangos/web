@@ -1,0 +1,33 @@
+﻿@{ 
+    ViewBag.Title = "加入群聊";
+}
+<div class="container">
+    <div id="wp" class="wp">
+        @await Html.PartialAsync("_Banner")
+        <div class="main">
+            @await Html.PartialAsync("_HomeNav")
+            <div class="right">
+                <div class="block news-item">
+                    <div class="news-item-content">
+                        <div class="news-item-title"><a href="javascript:;">扫码加群</a></div>
+                        <table class="qrcode-table">
+                            <tr>
+                                <td>
+                                    <img src="~/images/qq-group.png" />
+                                    <br />
+                                    扫码加入QQ群
+                                </td>
+                                <td>
+                                    <img src="~/images/wechat-group.png" />
+                                    <br />
+                                    扫码加入微信群
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

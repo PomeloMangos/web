@@ -2710,3 +2710,21 @@ select.parameter-textbox {
 .grid-table td {
     padding: 10px;
 }
+
+.qrcode-table {
+    width: 100%;
+    margin-top: 15px;
+    border-top: .7px solid #613c23;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.qrcode-table td {
+    width: 50%;
+    text-align: center;
+}
+
+.qrcode-table img {
+    width: 60%;
+    background: #ffb100;
+}

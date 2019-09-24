@@ -50,7 +50,7 @@
                                         <span class="@(x.Role >= AccountLevel.Master ? "master-color" : "")">@x.AccountName</span>
                                     }
                                 </td>
-                                <td>0</td>
+                                <td>@x.ReplyCount</td>
                                 <td>@x.VisitCount</td>
                                 <td class="table-right">@x.ReplyTime.ToString("yyyy-MM-dd HH:mm")</td>
                             </tr>

@@ -17,6 +17,8 @@ namespace Pomelo.WoW.Web.Models
 
         public uint VisitCount { get; set; }
 
+        public uint ReplyCount { get; set; }
+
         public bool IsPinned { get; set; }
 
         public bool IsLocked { get; set; }

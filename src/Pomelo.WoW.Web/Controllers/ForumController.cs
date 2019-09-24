@@ -62,7 +62,7 @@ namespace Pomelo.WoW.Web.Controllers
                     "`pomelo_account`.`CharacterNickname`, `pomelo_account`.`Username` AS `AccountName`, " +
                     "`pomelo_account`.`CharacterClass`, `pomelo_account`.`CharacterLevel`, " +
                     "`pomelo_forum_thread`.`Time`, `pomelo_forum_thread`.`ReplyTime`, " +
-                    "`pomelo_account`.`Role` " +
+                    "`pomelo_account`.`Role`, `pomelo_forum_thread`.`ReplyCount` " +
                     "FROM `pomelo_forum_thread` " +
                     "INNER JOIN `pomelo_account` " +
                     "ON `pomelo_forum_thread`.`AccountId` = `pomelo_account`.`Id` " +
@@ -122,6 +122,14 @@ namespace Pomelo.WoW.Web.Controllers
                         });
                     }
 
+                    if (parentId.HasValue)
+                    {
+                        await conn.ExecuteAsync(
+                        "UPDATE `pomelo_forum_thread` " +
+                        "SET `ReplyCount` = `ReplyCount` + 1 " +
+                        "WHERE `Id` = @parentId ;", new { parentId });
+                    }
+
                     var postId = (await conn.QueryAsync<uint>(
                         "INSERT INTO `pomelo_forum_thread` " +
                         "(`Title`, `Content`, `ForumId`, `AccountId`, `IsPinned`, `IsLocked`, `VisitCount`, `ParentId`) " +
@@ -148,7 +156,7 @@ namespace Pomelo.WoW.Web.Controllers
                         "`pomelo_account`.`CharacterNickname`, `pomelo_account`.`Username` AS `AccountName`, " +
                         "`pomelo_account`.`CharacterClass`, `pomelo_account`.`CharacterLevel`, " +
                         "`pomelo_forum_thread`.`Time`, `pomelo_forum_thread`.`ReplyTime`, " +
-                        "`pomelo_account`.`Role`, `pomelo_forum_thread`.`Content` " +
+                        "`pomelo_account`.`Role`, `pomelo_forum_thread`.`Content`, `pomelo_forum_thread`.`ReplyCount` " +
                         "FROM `pomelo_forum_thread` " +
                         "INNER JOIN `pomelo_account` " +
                         "ON `pomelo_forum_thread`.`AccountId` = `pomelo_account`.`Id` " +
@@ -180,6 +188,11 @@ namespace Pomelo.WoW.Web.Controllers
         {
             using (var conn = Models.Thread.GetAuthDb())
             {
+                await conn.ExecuteAsync(
+                "UPDATE `pomelo_forum_thread` " +
+                "SET `VisitCount` = `VisitCount` + 1 " +
+                "WHERE `Id` = @id", new { id });
+
                 var thread = (await conn.QueryAsync<Models.Thread>(
                     "SELECT `pomelo_forum_thread`.`Id`, `pomelo_forum_thread`.`ForumId`, " +
                     "`pomelo_forum_thread`.`Title`, `pomelo_forum_thread`.`VisitCount`, " +

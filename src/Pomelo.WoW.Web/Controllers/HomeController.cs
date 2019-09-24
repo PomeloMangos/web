@@ -34,5 +34,10 @@ namespace Pomelo.WoW.Web.Controllers
                 return View(ret);
             }
         }
+
+        public IActionResult Chat()
+        {
+            return View();
+        }
     }
 }
