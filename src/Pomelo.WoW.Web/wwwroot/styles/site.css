@@ -2728,3 +2728,23 @@ select.parameter-textbox {
     width: 60%;
     background: #ffb100;
 }
+
+.thread-content td, .thread-content th, .news-item-content td, .news-item-content th {
+    border: 1px solid;
+}
+
+.thread-content table, .news-item-content table {
+    border-collapse: collapse;
+}
+
+    .news-item-content table th, .news-item-content table td {
+        padding: 5px 8px;
+    }
+
+.news-item-content table {
+    margin-bottom: 15px;
+}
+
+.qrcode-table td {
+    border: none!important;
+}

@@ -14,5 +14,10 @@ namespace Pomelo.WoW.Web.Controllers
         {
             return File(System.IO.File.ReadAllBytes(Path.Combine("launcher", "launcher.exe")), "application/x-msdownload", "柚子魔兽.exe");
         }
+
+        public IActionResult Launcherwin7()
+        {
+            return File(System.IO.File.ReadAllBytes(Path.Combine("launcher", "launcher-win7.exe")), "application/x-msdownload", "柚子魔兽.exe");
+        }
     }
 }
