@@ -2735,15 +2735,12 @@ select.parameter-textbox {
 
 .thread-content table, .news-item-content table {
     border-collapse: collapse;
+    margin-bottom: 15px;
 }
 
     .news-item-content table th, .news-item-content table td {
         padding: 5px 8px;
     }
-
-.news-item-content table {
-    margin-bottom: 15px;
-}
 
 .qrcode-table td {
     border: none!important;
