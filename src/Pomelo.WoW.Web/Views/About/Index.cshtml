@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Thread>
+@{ 
+    ViewBag.Title = "首页";
+}
+<div class="container">
+    <div id="wp" class="wp">
+        @await Html.PartialAsync("_Banner")
+        <div class="main">
+            @await Html.PartialAsync("_HomeNav")
+            <div class="right">
+                @foreach (var x in Model)
+                {
+                    <div class="block news-item">
+                        <div class="news-item-title"><a asp-action="Post" asp-controller="Forum" asp-route-id="@x.Id">@x.Title</a></div>
+                        <div class="news-item-date">发布于：@x.Time.ToString("yyyy年MM月dd日")</div>
+                        <div class="news-item-content">@Html.Marked(x.Content)</div>
+                        <a asp-action="Post" asp-controller="Forum" asp-route-id="@x.Id">更多»</a>
+                    </div>
+                }
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

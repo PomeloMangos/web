@@ -2072,6 +2072,16 @@ a.nav-client .nav-bar-item.active {
     padding: 60px
 }
 
+.download2 {
+    background: url(../images/download-bg2.png) no-repeat;
+    background-position-x: left;
+    background-position-y: top;
+    min-height: 480px;
+    padding: 60px;
+    text-align: right;
+    margin-top: -100px;
+}
+
     .download img {
         max-width: 40%;
         box-shadow: 0 0 15px #aee4016b;
@@ -2744,4 +2754,27 @@ select.parameter-textbox {
 
 .qrcode-table td {
     border: none!important;
+}
+
+tbody.lst-posts img {
+    max-width: 100%;
+}
+
+.download2 pre {
+    text-align: left;
+    margin-left: 450px;
+    border: 1px solid;
+    padding: 5px;
+    background: rgba(0,0,0,0.5);
+    box-shadow: 0 0 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.download2 .banner-buttons a {
+    margin-right: 0;
+}
+
+.download2 .banner-content {
+    width: 100%;
 }

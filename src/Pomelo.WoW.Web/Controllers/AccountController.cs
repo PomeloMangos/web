@@ -58,7 +58,7 @@ namespace Pomelo.WoW.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string username, string password, string confirm, string email, string contact)
+        public async Task<IActionResult> Register(string username, string password, string confirm, string email, string contact, uint? referee)
         {
             if (password != confirm)
             {
@@ -111,12 +111,13 @@ namespace Pomelo.WoW.Web.Controllers
                     Salt = hash1.salt,
                     Role = AccountLevel.Player,
                     Email = email,
-                    Contact = contact
+                    Contact = contact,
+                    Referee = referee
                 };
 
                 query = await conn.QueryAsync<int>(
-                    "INSERT INTO `pomelo_account` (`Id`, `Username`, `Hash`, `Salt`, `Role`, `Email`, `Contact`) " +
-                    "VALUES (@Id, @Username, @Hash, @Salt, @Role, @Email, @Contact);" +
+                    "INSERT INTO `pomelo_account` (`Id`, `Username`, `Hash`, `Salt`, `Role`, `Email`, `Contact`, `Referee`) " +
+                    "VALUES (@Id, @Username, @Hash, @Salt, @Role, @Email, @Contact, @Referee);" +
                     "SELECT LAST_INSERT_ID();", account);
 
                 await conn.ExecuteAsync(
@@ -133,6 +134,12 @@ namespace Pomelo.WoW.Web.Controllers
                         joindate = DateTime.UtcNow,
                         expansion = 1
                     });
+
+                // 初始柚子币
+                await conn.ExecuteAsync(
+                    "INSERT INTO `pomelo_currency_owned` (`accid`, `currency`, `amount`) " +
+                    "VALUES (@accid, @currency, @amount);",
+                    new { accid = query, currency = 2, amount = 200 });
 
                 return Prompt(x => 
                 {

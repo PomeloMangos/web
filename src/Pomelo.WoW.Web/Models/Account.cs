@@ -34,5 +34,7 @@ namespace Pomelo.WoW.Web.Models
         public uint? DefaultCharacter { get; set; }
 
         public byte[] Avatar { get; set; }
+
+        public uint? Referee { get; set; }
     }
 }
