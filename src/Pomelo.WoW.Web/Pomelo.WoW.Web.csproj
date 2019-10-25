@@ -44,6 +44,9 @@
     <Content Update="Views\Account\CreateStone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Account\TradeSkill.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Account\Support.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -256,6 +256,7 @@ namespace Pomelo.WoW.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Support(uint card, string password)
         {
+            password = password.ToLower();
             using (var conn = Card.GetAuthDb())
             {
                 var result = await conn.QueryAsync<Card>("SELECT * FROM `pomelo_card` WHERE `Id` = @card;", new { card });
@@ -294,7 +295,7 @@ namespace Pomelo.WoW.Web.Controllers
                     "VALUES " +
                     "   (@accid, @currency, @amount) " +
                     "ON DUPLICATE KEY UPDATE " +
-                    "   `amount` = `amount` = @amount; " +
+                    "   `amount` = `amount` + @amount; " +
                     "UPDATE " +
                     "   `pomelo_card` " +
                     "SET " +
@@ -302,12 +303,102 @@ namespace Pomelo.WoW.Web.Controllers
                     "   `UsedAt` = @usedat " +
                     "WHERE " +
                     "   `Id` = @card; ",
-                    new { accid = Account.Id, Currency = 1, c.Account, usedat = DateTime.Now, card });
+                    new { accid = Account.Id, Currency = 1, c.Account, usedat = DateTime.Now, card, amount = c.Value });
 
                 return Prompt(x =>
                 {
                     x.Title = "赞助成功";
                     x.Details = $"请返回赞助页面查看各币余额";
+                });
+            }
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> TradeSkill()
+        {
+            using (var conn = Character.GetCharacterDb(Character.RealmId))
+            {
+                var result = await conn.QueryAsync<uint>(
+                    "SELECT " +
+                    "   `add_trade_skill` " +
+                    "FROM " +
+                    "   `characters` " +
+                    "WHERE " +
+                    "   `guid` = @id", new { id = Character.Id });
+                ViewBag.TradeSkillCount = result.FirstOrDefault();
+                return View();
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> TradeSkill(string submit)
+        {
+            using (var conn = Character.GetCharacterDb(Character.RealmId))
+            using (var authconn = Character.GetAuthDb())
+            {
+                var result1 = await conn.QueryAsync<uint>(
+                    "SELECT " +
+                    "   `add_trade_skill` " +
+                    "FROM " +
+                    "   `characters` " +
+                    "WHERE " +
+                    "   `guid` = @id", new { id = Character.Id });
+
+                if (result1.FirstOrDefault() == 1)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "操作失败";
+                        x.Details = "您已经提升过商业技能上限，请勿重复操作！";
+                        x.StatusCode = 400;
+                    });
+                }
+
+                var result2 = await authconn.QueryAsync<uint>(
+                    "SELECT " +
+                    "   `amount` " +
+                    "FROM " +
+                    "   `pomelo_currency_owned` " +
+                    "WHERE " +
+                    "   `accid` = @accid " +
+                    "   AND `currency` = 1" +
+                    "   AND `amount` >= 100;", new { accid = Account.Id });
+
+                if (result2.Count() == 0)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "操作失败";
+                        x.Details = "您的蜜柚币数量不足以完成本次操作！";
+                        x.StatusCode = 400;
+                    });
+                }
+
+                await conn.ExecuteAsync(
+                    "UPDATE " +
+                    "   `characters` " +
+                    "SET " +
+                    "   `add_trade_skill` = 1 " +
+                    "WHERE " +
+                    "   `guid` = @id", new { id = Character.Id });
+
+                await authconn.ExecuteAsync(
+                    "UPDATE " +
+                    "   `pomelo_currency_owned` " +
+                    "SET " +
+                    "   `amount` = `amount` - 100 " +
+                    "WHERE " +
+                    "   `accid` = @id " +
+                    "   AND `currency` = 1;", new { id = Account.Id });
+
+                return Prompt(x => 
+                {
+                    x.Title = "操作成功";
+                    x.Details = "已成功为当前角色提升了1项专业技能上限";
                 });
             }
         }

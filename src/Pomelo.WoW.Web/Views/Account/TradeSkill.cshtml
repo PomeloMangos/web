@@ -1,0 +1,42 @@
+﻿@model IEnumerable<StoneMenu>
+@{ 
+    ViewBag.Title = "额外的商业技能";
+    Character character = ViewBag.Character;
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title">额外的商业技能</div>
+                    <div>您是否需要花费100点蜜柚币提升一个商业技能上限？</div>
+                    @if (ViewBag.TradeSkillCount == 1)
+                    {
+                        <div>您已经提升过商业技能上限了，无法重复提升！</div>
+                    }
+                    else if (character == null)
+                    {
+                        <div>您还没有创建任何角色，请您进入游戏创建一个角色再来操作。</div>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <input type="submit" class="large-button medium" value="我要提升" style="margin-top: 20px" />
+                        </form>
+                    }
+                </div>
+            </div>
+            @await Html.PartialAsync("_AccountNav")
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<form asp-action="RemoveStone" id="form-delete-stone-menu">
+    <input type="hidden" name="id" id="hid-id" />
+</form>
+<script>
+    function remove (id) {
+        $('#hid-id').val(id);
+        $('#form-delete-stone-menu').submit();
+    }
+</script>

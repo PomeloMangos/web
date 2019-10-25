@@ -19,12 +19,9 @@
 
         <h3 class="sidebar-menu-title first">角色管理</h3>
         <a asp-action="Index" class="sidebar-menu-item @(action == "index" ? "active" : "")"><i class="fa fa-user-circle-o"></i> 我的角色</a>
-        <a asp-action="Reward" class="sidebar-menu-item @(action == "reward" ? "active" : "")"><i class="fa fa-user-circle-o"></i> 活动奖励</a>
         <a asp-action="Stuck" class="sidebar-menu-item @(action == "stuck" ? "active" : "")"><i class="fa fa-stethoscope"></i> 角色卡死</a>
-        <a asp-action="Gift" class="sidebar-menu-item @(action == "gift" ? "active" : "")"><i class="fa fa-gift"></i> 兑换CDK</a>
         <a asp-action="Move" class="sidebar-menu-item @(action == "move" ? "active" : "")"><i class="fa fa-mail-forward"></i> 角色转服</a>
         <a asp-action="FindItem" class="sidebar-menu-item @(action == "finditem" ? "active" : "")"><i class="fa fa-trash"></i> 物品误删找回</a>
-        <a asp-action="Transmog" class="sidebar-menu-item @(action == "transmogrified" ? "active" : "")"><i class="fa fa-sun-o"></i> 幻化系统</a>
 
         <h3 class="sidebar-menu-title">账号管理</h3>
         <a asp-action="AvatarSettings" class="sidebar-menu-item @(action == "avatarsettings" ? "active" : "")"><i class="fa fa-file-image-o"></i> 设置头像</a>
