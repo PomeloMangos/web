@@ -1,0 +1,38 @@
+﻿@{ 
+    ViewBag.Title = "创建帮助";
+}
+<div class="container">
+    <div id="wp" class="wp">
+        <div class="main">
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title" style="margin-bottom: 15px;">@ViewBag.Title</div>
+                    <div class="news-item-content">
+                        <form method="post" action="/about/create">
+                            <h3>标题</h3>
+                            <input type="text" class="post-textbox" name="title" />
+                            <h3>分组</h3>
+                            <input type="text" class="post-textbox" name="group" />
+                            <h3>优先级</h3>
+                            <input type="text" class="post-textbox" name="priority" />
+                            <h3 style="margin-top: 15px;">内容</h3>
+                            <textarea class="markdown-editor" name="content"></textarea>
+                            <input type="submit" value="发表" style="margin-top: 15px;" class="large-button" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="right2">
+                @foreach (var x in ((List<About>)ViewBag.AboutItems).GroupBy(x => x.Group))
+                {
+                    <h3 class="sidebar-menu-title first">@x.Key</h3>
+                    foreach (var y in x)
+                    {
+                        <a asp-route-id="@y.Id" class="sidebar-menu-item"><i class="fa fa-diamond"></i> @y.Title</a>
+                    }
+                }
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

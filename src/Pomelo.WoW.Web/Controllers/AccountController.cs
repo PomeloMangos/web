@@ -230,6 +230,89 @@ namespace Pomelo.WoW.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Support()
+        {
+            using (var conn = CustomCurrency.GetAuthDb())
+            {
+                var result = await conn.QueryAsync<CustomCurrency>(
+                    "SELECT " +
+                    "   `pomelo_currency`.`entry`, `pomelo_currency`.`name`, " +
+                    "   `pomelo_currency`.`comment`, `pomelo_currency_owned`.`amount` " +
+                    "FROM " +
+                    "   `pomelo_currency`" +
+                    "   LEFT JOIN " +
+                    "       `pomelo_currency_owned` " +
+                    "   ON " +
+                    "       `pomelo_currency_owned`.`currency` = `pomelo_currency`.`entry` " +
+                    "WHERE " +
+                    "   `accid` = @accid;", new { accid = Account.Id });
+
+                return View(result.ToList());
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Support(uint card, string password)
+        {
+            using (var conn = Card.GetAuthDb())
+            {
+                var result = await conn.QueryAsync<Card>("SELECT * FROM `pomelo_card` WHERE `Id` = @card;", new { card });
+                if (result.Count() == 0)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "赞助失败";
+                        x.Details = "赞助卡卡号或密码不正确！";
+                        x.StatusCode = 400;
+                    });
+                }
+                var c = result.First();
+                if (c.Account.HasValue)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "赞助失败";
+                        x.Details = "赞助卡已被使用，请使用新的赞助卡进行赞助！";
+                        x.StatusCode = 400;
+                    });
+                }
+                if (c.Password != password)
+                {
+                    return Prompt(x =>
+                    {
+                        x.Title = "赞助失败";
+                        x.Details = "赞助卡卡号或密码不正确！";
+                        x.StatusCode = 400;
+                    });
+                }
+
+                await conn.ExecuteAsync(
+                    "INSERT INTO " +
+                    "   `pomelo_currency_owned` (`accid`, `currency`, `amount`)" +
+                    "VALUES " +
+                    "   (@accid, @currency, @amount) " +
+                    "ON DUPLICATE KEY UPDATE " +
+                    "   `amount` = `amount` = @amount; " +
+                    "UPDATE " +
+                    "   `pomelo_card` " +
+                    "SET " +
+                    "   `Account` = @accid," +
+                    "   `UsedAt` = @usedat " +
+                    "WHERE " +
+                    "   `Id` = @card; ",
+                    new { accid = Account.Id, Currency = 1, c.Account, usedat = DateTime.Now, card });
+
+                return Prompt(x =>
+                {
+                    x.Title = "赞助成功";
+                    x.Details = $"请返回赞助页面查看各币余额";
+                });
+            }
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Stuck(int place)
         {

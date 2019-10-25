@@ -10,6 +10,9 @@ namespace Pomelo.WoW.Web.Models
         [Column("name")]
         public string Name { get; set; }
 
+        [Column("amount")]
+        public uint Amount { get; set; }
+
         [Column("comment")]
         public string Comment { get; set; }
     }

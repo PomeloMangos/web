@@ -2778,3 +2778,7 @@ tbody.lst-posts img {
 .download2 .banner-content {
     width: 100%;
 }
+
+.news-item-content img {
+    max-width: 100%;
+}

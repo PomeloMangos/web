@@ -1,21 +1,27 @@
-﻿@model IEnumerable<Thread>
+﻿@model About
 @{ 
-    ViewBag.Title = "首页";
+    ViewBag.Title = Model.Title + " - 关于";
+    Character character = ViewBag.Character;
 }
 <div class="container">
     <div id="wp" class="wp">
-        @await Html.PartialAsync("_Banner")
         <div class="main">
-            @await Html.PartialAsync("_HomeNav")
-            <div class="right">
-                @foreach (var x in Model)
-                {
-                    <div class="block news-item">
-                        <div class="news-item-title"><a asp-action="Post" asp-controller="Forum" asp-route-id="@x.Id">@x.Title</a></div>
-                        <div class="news-item-date">发布于：@x.Time.ToString("yyyy年MM月dd日")</div>
-                        <div class="news-item-content">@Html.Marked(x.Content)</div>
-                        <a asp-action="Post" asp-controller="Forum" asp-route-id="@x.Id">更多»</a>
+            <div class="left2">
+                <div class="account-main">
+                    <div class="account-title" style="margin-bottom: 15px;">@Model.Title</div>
+                    <div class="news-item-content">
+                        @Html.Marked(Model.Content)
                     </div>
+                </div>
+            </div>
+            <div class="right2">
+                @foreach (var x in ((List<About>)ViewBag.AboutItems).GroupBy(x => x.Group))
+                {
+                    <h3 class="sidebar-menu-title first">@x.Key</h3>
+                    foreach (var y in x)
+                    {
+                        <a asp-route-id="@y.Id" class="sidebar-menu-item @(Model.Id == y.Id ? "active" : "")"><i class="fa fa-diamond"></i> @y.Title</a>
+                    }
                 }
             </div>
             <div class="clear"></div>
